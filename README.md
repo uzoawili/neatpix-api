@@ -1,2 +1,2 @@
-# photo-editing-application
+# neatpix
 Upload. Prettify. Share.
