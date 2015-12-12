@@ -1,0 +1,1 @@
+web: python neatpix/manage.py collectstatic --noinput --settings=neatpix.settings.staging --verbosity 0; gunicorn neatpix.wsgi --pythonpath=neatpix --log-file -
