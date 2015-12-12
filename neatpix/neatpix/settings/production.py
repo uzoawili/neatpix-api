@@ -2,23 +2,19 @@
 production specific settings for this project.
 """
 
-import dj_database_url
 import os
-
 from .base import *
 
-
-APPLICATION_DIR = os.path.dirname(globals()['__file__'])
 
 DEBUG = False
 
 DATABASES = {
-    'default': dj_database_url.config()
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': '',
+        'PORT': '',
+    }
 }
-
-# Enable Connection Pooling
-DATABASES['default']['ENGINE'] = 'django_postgrespool'
-
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-ALLOWED_HOSTS = ['*']
