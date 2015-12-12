@@ -10,7 +10,8 @@ install:
 script:
 - bower install
 - python neatpix/manage.py collectstatic --noinput --settings=neatpix.settings.testing
-- coverage run --source=webapp,api neatpix/manage.py test neatpix --settings=neatpix.settings.testing -s
+- coverage run --source=webapp,api neatpix/manage.py test neatpix --settings=neatpix.settings.testing
+  -s
 after_success:
 - coveralls
 deploy:
@@ -18,15 +19,18 @@ deploy:
   buildpack:
     - node
     - python
-  api_key: '0e293adb-05d5-4d8a-8d5d-e0b9e4fb7633'
+  api_key:
+    secure: JRgLF1LupJ2XHKf6gmOVNNhr9zMfOYi8uOKjDmMTV43VP79+xmwD1euBbWYFuGeAP+zB1K733hyaJ883655FdSRkj4j4pt1GerAh2Tago9C89Z1IcGwmEOaw5lR+OfMJwSCutEfhdOqfP//MaAVjOt8Qrgoef8xZ+jMHub5Owz11kLFkFQ9rEh/+kF26zH23JadLjxNTRPPud0hNyqz1GUqGSPTR25ge7ssBPxZ0OWLjjelDseJh+CJ54qdd1eYnf3oftxMAgyA6pfLz9t0Of645e/iPwniQFSONkUgngpkrkHBVDV3f327exfq59bO4QQHdZML6CBLe0Vwa1tNlDT5XP5+FIWI3dpsfSAK96hhADgvVEQL1ZCQnN2FIv4QDG2yCbfP1aFvbBHZsk1RGdBZbE3/NdogogEMbtuxzTBMrWE3xMNda3f4k4QMk9BZhG1UomxmoH2oSc5pUprb6fPgfq6bzWcsxyWDqOdxttHO3F+QRCIM6aopX0cxBzM8g/FH+Fbp8LnkJgnBCAc1Bk1jXgZq6ORTlSpL7J5im4mz1AVWXxD2F0rtxCbaSKnKe1EArVRFgigddb4MPMiOsRDGKK30WoCf9XM7Szgk8FepScJQywfctORGOL48NKS0BfOZPSZU5pIlpesjsxrWptDHhWVv+Rs32kLa1pr2TWsY=
   app:
     develop: neatpix
+    master: neatpix
   on:
     all_branches: true
   run:
-    - "python neatpix/manage.py collectstatic --noinput --settings=neatpix.settings.staging"
-    - "python neatpix/manage.py makemigrations --settings=neatpix.settings.staging"
-    - "python neatpix/manage.py migrate auth --settings=neatpix.settings.staging"
-    - "python neatpix/manage.py migrate --settings=neatpix.settings.staging"
+    - export DJANGO_SETTINGS_MODULE=neatpix.settings.staging
+    - python neatpix/manage.py collectstatic --noinput --settings=neatpix.settings.staging
+    - python neatpix/manage.py makemigrations --settings=neatpix.settings.staging
+    - python neatpix/manage.py migrate auth --settings=neatpix.settings.staging
+    - python neatpix/manage.py migrate --settings=neatpix.settings.staging
 after_deploy:
   - "heroku ps:scale web=1 --app neatpix"
