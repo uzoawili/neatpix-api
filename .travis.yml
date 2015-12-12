@@ -23,6 +23,10 @@ deploy:
     develop: neatpix
   on:
     all_branches: true
-  
+  run:
+    - "python neatpix/manage.py collectstatic --noinput --settings=neatpix.settings.staging"
+    - "python neatpix/manage.py makemigrations --settings=neatpix.settings.staging"
+    - "python neatpix/manage.py migrate auth --settings=neatpix.settings.staging"
+    - "python neatpix/manage.py migrate --settings=neatpix.settings.staging"
 after_deploy:
   - "heroku ps:scale web=1 --app neatpix"
