@@ -1,0 +1,33 @@
+language: python
+python:
+- '2.7'
+env:
+- DJANGO_SETTINGS_MODULE='neatpix.settings.testing'
+install:
+- pip install --upgrade pip
+- pip install -r requirements.txt
+- npm install bower
+script:
+- bower install --settings=neatpix.settings.testing
+- python neatpix/manage.py collectstatic --noinput --settings=neatpix.settings.testing
+- coverage run --source=webapp,api neatpix/manage.py test neatpix --settings=neatpix.settings.testing -s
+after_success:
+- coveralls
+deploy:
+  provider: heroku
+  buildpack:
+    - node
+    - python
+  api_key: '0e293adb-05d5-4d8a-8d5d-e0b9e4fb7633'
+  app:
+    develop: neatpix
+  on:
+    all_branches: true
+  run:
+    - "export DJANGO_SETTINGS_MODULE=neatpix.settings.staging"
+    - "python neatpix/manage.py collectstatic --noinput --settings=neatpix.settings.staging"
+    - "python neatpix/manage.py makemigrations --settings=neatpix.settings.staging"
+    - "python neatpix/manage.py migrate auth --settings=neatpix.settings.staging"
+    - "python neatpix/manage.py migrate --settings=neatpix.settings.staging"
+after_deploy:
+  - "heroku ps:scale web=1 --app neatpix"

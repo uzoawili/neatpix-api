@@ -1,0 +1,25 @@
+{
+  "name": "neatpix",
+  "version": "0.0.1",
+  "authors": [
+    "Awili Uzo <uzo.awili@andela.com>"
+  ],
+  "description": "-neatpix requirements",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "neatpix.herokuapp.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "4.0",
+    "font-awesome": "fontawesome#~4.4.0",
+    "jquery": "~2.1.4"
+  }
+}
