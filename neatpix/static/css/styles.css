@@ -66,25 +66,25 @@ body {
 h1 {
   color: #FFFFFF;
   font-size: 40px;
-  font-weight: 300;
+  font-weight: 100;
 }
 
 h2 {
   color: #0085B3;
-  font-size: 30px;
-  font-weight: 400;
+  font-size: 25px;
+  font-weight: 100;
 }
 
 h3 {
   color: #646472;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
 }
 
 body {
-  color: #646472;
-  font-size: 12px;
-  font-weight: 400;
+  color: #EEEEEE;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 h1 {
@@ -96,13 +96,13 @@ h1 {
 }
 
 .mini-label, .section-label {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
 }
 
 .section-label {
-  color: #C3C3C8;
+  color: #646472;
 }
 
 .section-label i {
@@ -135,7 +135,7 @@ a:focus, .dropdown .dropdown-menu li > a:focus, .menu-link:focus, .label-link:fo
 }
 
 .label-link, .label-link-list-v > li > a, .dropdown .dropdown-menu .label-link-list-v > li > a, .label-link-list-v > li > .menu-link, .label-link-list-v > li > .label-link, .label-link-list-h > li > a, .dropdown .dropdown-menu .label-link-list-h > li > a, .label-link-list-h > li > .menu-link, .label-link-list-h > li > .label-link {
-  font-size: 12px;
+  font-size: 13px;
   text-transform: uppercase;
 }
 
@@ -161,9 +161,10 @@ Buttons
   color: #646472;
   background-color: transparent;
   border-color: transparent;
+  cursor: pointer;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
-  font-size: 12px;
+  font-size: 13px;
   text-transform: uppercase;
 }
 
@@ -189,7 +190,7 @@ Buttons
           appearance: none;
   overflow: hidden;
   border: 1px solid;
-  height: 40px;
+  height: 50px;
   display: inline-block;
   border-radius: 5px;
   padding: 5px 20px;
@@ -200,21 +201,22 @@ Buttons
   font-weight: 700;
   text-align: center;
   color: #FFFFFF;
-  background-color: #005879;
-  border-color: #EEEEEE;
+  background-color: rgba(0, 88, 121, 0.5);
+  border-color: rgba(238, 238, 238, 0.5);
+  cursor: pointer;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
 }
 
 .btn-action-alt:hover {
   color: #FFFFFF;
-  background-color: #0085B3;
+  background-color: #005879;
   border-color: #EEEEEE;
 }
 
 .btn-action-alt:active {
   color: #F7F7F7;
-  background-color: #005879;
+  background-color: #0085B3;
   border-color: #EEEEEE;
 }
 
@@ -265,7 +267,7 @@ Forms Controls
 ========================================================================== */
 .label-asterik {
   color: #0085B3;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 /* ==========================================================================
@@ -308,13 +310,24 @@ Other components.
 Sections
 ========================================================================== */
 html, body, .viewport-container {
+  width: 100%;
   height: 100%;
+  overflow: hidden;
+  margin: 0;
 }
 
 body {
   position: relative;
   min-width: 360px;
-  background-color: #646472;
+  background-color: #EEEEEE;
+}
+
+.scollable-x {
+  overflow-x: scroll;
+}
+
+.scollable-y {
+  overflow-y: scroll;
 }
 
 .modals-wrapper {
@@ -389,7 +402,7 @@ body {
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
   font-weight: 700;
-  font-size: 12px;
+  font-size: 13px;
   text-transform: uppercase;
 }
 
@@ -438,4 +451,51 @@ body {
           filter: blur(20px);
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
+}
+
+.index-page {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: scroll;
+}
+
+.index-page .bg-img {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  z-index: -10;
+}
+
+.index-page .bg-img img {
+  width: auto;
+  height: 100%;
+  -webkit-filter: blur(3px);
+          filter: blur(3px);
+}
+
+.index-page .page-content {
+  width: 100%;
+  height: 100%;
+}
+
+.index-page .hero {
+  position: relative;
+  background-color: rgba(0, 133, 178, 0.9);
+}
+
+.index-page .slogan {
+  color: #EEEEEE;
+  font-weight: 100;
+}
+
+.index-page .call-to-action {
+  margin-top: 50px;
+}
+
+.index-page .footer {
+  min-height: 60px;
+  background-color: #EEEEEE;
+  color: #646472;
 }
