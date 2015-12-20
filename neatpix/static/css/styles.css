@@ -1,6 +1,10 @@
 /* ==========================================================================
 Resets (overrides for Bootstrap and browser-defaults)
 ========================================================================== */
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
 body {
   -webkit-appearance: none;
      -moz-appearance: none;
@@ -262,6 +266,10 @@ Buttons
           transform: translate(-50%, -50%);
 }
 
+a.btn-action, .dropdown .dropdown-menu li > a.btn-action, .btn-action.menu-link, .btn-action.label-link, .label-link-list-v > li > a.btn-action, .label-link-list-h > li > a.btn-action, a.btn-action-alt, .dropdown .dropdown-menu li > a.btn-action-alt, .btn-action-alt.menu-link, .btn-action-alt.label-link, .label-link-list-v > li > a.btn-action-alt, .label-link-list-h > li > a.btn-action-alt {
+  line-height: 2.5;
+}
+
 /* ==========================================================================
 Forms Controls
 ========================================================================== */
@@ -471,8 +479,8 @@ body {
 .index-page .bg-img img {
   width: auto;
   height: 100%;
-  -webkit-filter: blur(3px);
-          filter: blur(3px);
+  -webkit-filter: blur(2px);
+          filter: blur(2px);
 }
 
 .index-page .page-content {

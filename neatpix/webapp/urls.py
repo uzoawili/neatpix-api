@@ -1,5 +1,6 @@
 from django.conf.urls import url
-from views import IndexView, DashboardView
+from views import IndexView, DashboardView,\
+                  LogoutView
 
 
 urlpatterns = [
@@ -8,8 +9,12 @@ urlpatterns = [
         IndexView.as_view(),
         name='index'),
 
-    url(r'^(?P<slug>[\w-]+)/dashboard/$',
+    url(r'^dashboard/$',
         DashboardView.as_view(),
         name='dashboard'),
+
+    url(r'^logout/$',
+        LogoutView.as_view(),
+        name='logout'),
 
 ]

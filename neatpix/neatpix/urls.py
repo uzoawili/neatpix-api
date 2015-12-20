@@ -22,4 +22,9 @@ urlpatterns = [
         include('webapp.urls',
                 namespace='webapp')),
 
+    # social auth:
+    url(r'^',
+        include('social.apps.django_app.urls',
+                namespace='social')),
+
 ]
