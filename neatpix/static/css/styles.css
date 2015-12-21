@@ -178,7 +178,7 @@ Buttons
   border-color: transparent;
 }
 
-.btn-action:active {
+.btn-action:active, .btn-action:focus {
   color: #F7F7F7;
   background-color: #005879;
   border-color: transparent;
@@ -218,7 +218,7 @@ Buttons
   border-color: #EEEEEE;
 }
 
-.btn-action-alt:active {
+.btn-action-alt:active, .btn-action-alt:focus {
   color: #F7F7F7;
   background-color: #0085B3;
   border-color: #EEEEEE;

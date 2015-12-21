@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Home{% endblock title %}
-
 {% block main %}
   <main class="index-page">
 
@@ -13,11 +11,16 @@
     <div class="page-content flex column-layout">
 
       <section class="hero fill flex column-layout horizontal align-middle vertical align-center">
-        <div class="brand"><img src="{% static 'img/logo-xl-white.png' %}"></div>
+        <div class="brand"><img src="{% static 'img/logo-lg-white.png' %}"></div>
         <h2 class="slogan">upload. prettify. share.</h2>
         <div class="call-to-action">
-          <a href="{% url 'social:begin' 'facebook' %}" class="btn-action-alt"><i class="fa fa-facebook-official fa-fw"></i> Log in with Facebook</a>
+          <button class="btn-action-alt" id="facebook-login-action"><i class="fa fa-facebook-official fa-fw"></i> Log in with Facebook</button>
         </div>
+        <div class="status">
+          <p id="facebook-login-status"></p>
+          <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+        </div>
+
       </section>
 
       <footer class="footer flex column-layout horizontal align-middle vertical align-center">

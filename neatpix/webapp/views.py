@@ -35,6 +35,19 @@ class IndexView(View):
         return render(self.request, 'webapp/index.html', context)
 
 
+class LogoutView(LoginRequiredMixin, View):
+    """
+    Logs the user out.
+    """
+
+    def get(self, request, *args, **kwargs):
+        """
+        Logs a user out and redirects to the index view.
+        """
+        logout(request)
+        return redirect(reverse('webapp:index'))
+
+
 class DashboardView(LoginRequiredMixin, View):
     """
     Represents the signed in users' dashboard/workspace view.
@@ -47,17 +60,4 @@ class DashboardView(LoginRequiredMixin, View):
         # show index view:
         context = {}
         context.update(csrf(self.request))
-        return render(self.request, 'webapp/index.html', context)
-
-
-class LogoutView(LoginRequiredMixin, View):
-    """
-    Logs the user out.
-    """
-
-    def get(self, request, *args, **kwargs):
-        """
-        Logs a user out and redirects to the index view.
-        """
-        logout(request)
-        return redirect(reverse('webapp:index'))
+        return render(self.request, 'webapp/dashboard.html', context)
