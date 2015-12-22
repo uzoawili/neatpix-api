@@ -4,7 +4,7 @@
 {% block main %}
   <main class="index-page">
 
-    <div class="bg-img">
+    <div class="bg-img imgLiquidFill bg-image">
       <img src="{% static 'img/collage.png' %}">
     </div>
 
@@ -18,7 +18,7 @@
         </div>
         <div class="status">
           <p id="facebook-login-status"></p>
-          <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+          <form id="login-csrf">{% csrf_token %}</form>
         </div>
 
       </section>

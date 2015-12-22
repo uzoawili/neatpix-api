@@ -1,10 +1,14 @@
+import json
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.core.context_processors import csrf
-from django.contrib.auth import logout
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import View
+
+from forms import FacebookAuthForm
+from decorators import json_response
 
 
 class LoginRequiredMixin(object):
@@ -17,11 +21,20 @@ class LoginRequiredMixin(object):
             request, *args, **kwargs)
 
 
+class JsonResponseMixin(object):
+    """
+    View mixin which requires that the user is authenticated.
+    """
+    @method_decorator(json_response)
+    def dispatch(self, request, *args, **kwargs):
+        return super(JsonResponseMixin, self).dispatch(
+            request, *args, **kwargs)
+
+
 class IndexView(View):
     """
-    Represents the index/authentication view.
+    The index/login view.
     """
-
     def get(self, request, *args, **kwargs):
         """
         Renders the index/home view
@@ -35,11 +48,37 @@ class IndexView(View):
         return render(self.request, 'webapp/index.html', context)
 
 
+class FacebookAuthView(JsonResponseMixin, View):
+    """
+    Logs a user in with their facebook account.
+    """
+    def post(self, request, *args, **kwargs):
+        """
+        Logs a user out and redirects to the index view.
+        """
+        auth_form = FacebookAuthForm(request.POST)
+        if auth_form.is_valid():
+            # get or create the user:
+            user = auth_form.save()
+            if user:
+                profile = user.social_profile
+                profile.extra_data = json.dumps(request.POST)
+                profile.save()
+                # log the user in:
+                login(request, user)
+                # return success response:
+                return {
+                    'status': 'success',
+                    'loginRedirectURL': reverse('webapp:dashboard'),
+                }
+        # return error response
+        return {'status': 'error', }
+
+
 class LogoutView(LoginRequiredMixin, View):
     """
     Logs the user out.
     """
-
     def get(self, request, *args, **kwargs):
         """
         Logs a user out and redirects to the index view.
@@ -52,7 +91,6 @@ class DashboardView(LoginRequiredMixin, View):
     """
     Represents the signed in users' dashboard/workspace view.
     """
-
     def get(self, request, *args, **kwargs):
         """
         Renders the dashboard view.

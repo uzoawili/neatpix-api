@@ -40,7 +40,6 @@ INSTALLED_APPS = (
     'django_nose',
     'rest_framework',
     'widget_tweaks',
-    'social.apps.django_app.default',
     'webapp',
     'api',
 )
@@ -70,8 +69,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'social.apps.django_app.context_processors.backends',
-                'social.apps.django_app.context_processors.login_redirect',
             ],
         },
     },
@@ -83,13 +80,12 @@ WSGI_APPLICATION = 'neatpix.wsgi.application'
 # Authentication backends:
 
 AUTHENTICATION_BACKENDS = (
-    'social.backends.facebook.FacebookOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
 
-LOGIN_URL = 'home'
+LOGIN_URL = 'webapp:index'
 
-LOGOUT_URL = 'home'
+LOGOUT_URL = 'webapp:logout'
 
 LOGIN_REDIRECT_URL = 'webapp:dashboard'
 
@@ -148,21 +144,4 @@ REST_FRAMEWORK = {
 
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 
-}
-
-
-# Python social auth:
-
-SOCIAL_AUTH_FACEBOOK_KEY = os.getenv('SOCIAL_AUTH_FACEBOOK_KEY')
-
-SOCIAL_AUTH_FACEBOOK_SECRET = os.getenv('SOCIAL_AUTH_FACEBOOK_SECRET')
-
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/dashboard/'
-
-SOCIAL_AUTH_LOGIN_URL = '/'
-
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
-
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-  'fields': 'id, name, email, age_range'
 }
