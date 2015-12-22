@@ -41,7 +41,6 @@ INSTALLED_APPS = (
     'rest_framework',
     'widget_tweaks',
     'webapp',
-    'api',
 )
 
 MIDDLEWARE_CLASSES = (

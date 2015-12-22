@@ -1,0 +1,31 @@
+[
+  {
+    "fields": {
+      "username": "AwiliUzo_10207225470607962",
+      "first_name": "Awili",
+      "last_name": "Uzo",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": "2015-12-22T10:43:50.173Z",
+      "groups": [],
+      "user_permissions": [],
+      "password": "",
+      "email": "awilo@ymail.com",
+      "date_joined": "2015-12-22T10:42:51.148Z"
+    },
+    "model": "auth.user",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "photo": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfa1/v/t1.0-1/c12.12.155.155/s50x50/263887_2068560666509_6232229_n.jpg?oh=508c42c071fd2715d0bc0c72641da1ff&oe=56DD1CCB&__gda__=1460140441_452fbbd669123f92483105685d7e287f",
+      "social_id": "10207225470607962",
+      "extra_data": "{\"first_name\": \"Awili\", \"last_name\": \"Uzo\", \"photo\": \"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfa1/v/t1.0-1/c12.12.155.155/s50x50/263887_2068560666509_6232229_n.jpg?oh=508c42c071fd2715d0bc0c72641da1ff&oe=56DD1CCB&__gda__=1460140441_452fbbd669123f92483105685d7e287f\", \"email\": \"awillionaire@ymail.com\", \"picture[data][is_silhouette]\": \"false\", \"picture[data][url]\": \"https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfa1/v/t1.0-1/c12.12.155.155/s50x50/263887_2068560666509_6232229_n.jpg?oh=508c42c071fd2715d0bc0c72641da1ff&oe=56DD1CCB&__gda__=1460140441_452fbbd669123f92483105685d7e287f\", \"id\": \"10207225470607962\"}",
+      "user": 1,
+      "provider": 1
+    },
+    "model": "webapp.socialprofile",
+    "pk": 1
+  }
+]

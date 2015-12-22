@@ -11,10 +11,10 @@ class FacebookAuthForm(forms.Form):
     existing or created user.
     """
 
-    id = forms.CharField(max_length=255)
+    id = forms.CharField()
     email = forms.EmailField()
-    first_name = forms.CharField(max_length=255)
-    last_name = forms.CharField(max_length=255)
+    first_name = forms.CharField()
+    last_name = forms.CharField()
     photo = forms.CharField(required=False)
 
     def save(self):
@@ -34,10 +34,13 @@ class FacebookAuthForm(forms.Form):
             user = social_profile.user
 
         except SocialProfile.DoesNotExist:
-
             # Create the user:
             user = User(
-                username="{}{}".format(data['first_name'], data['last_name']),
+                username="{}{}_{}".format(
+                    data['first_name'],
+                    data['last_name'],
+                    data['id'],
+                ),
                 email=data['email'],
                 first_name=data['first_name'],
                 last_name=data['last_name']
