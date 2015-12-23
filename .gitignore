@@ -77,6 +77,10 @@ neatpix/staticfiles/
 # database migrations
 neatpix/*/migrations/*
 
+# Gulp-Sass preprocessing
+troupon/prepros.cfg
+node_modules/
+
 # local resources
 _resources/
 

@@ -41,7 +41,6 @@ INSTALLED_APPS = (
     'rest_framework',
     'widget_tweaks',
     'webapp',
-    'api',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -83,9 +82,9 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-LOGIN_URL = 'home'
+LOGIN_URL = 'webapp:index'
 
-LOGOUT_URL = 'home'
+LOGOUT_URL = 'webapp:logout'
 
 LOGIN_REDIRECT_URL = 'webapp:dashboard'
 
