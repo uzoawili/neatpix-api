@@ -12,7 +12,7 @@ body {
 }
 
 h1, h2, h3, h4 {
-  margin: 0 0 10 0;
+  margin: 0 0 10;
 }
 
 ul, ol {
@@ -38,7 +38,7 @@ p {
   height: 1px;
   margin: 0;
   overflow: hidden;
-  background-color: rgba(238, 238, 238, 0.5);
+  background-color: rgba(204, 204, 204, 0.5);
 }
 
 .divider-v {
@@ -46,7 +46,7 @@ p {
   height: 1px;
   margin: 0;
   overflow: hidden;
-  background-color: rgba(238, 238, 238, 0.5);
+  background-color: rgba(204, 204, 204, 0.5);
   width: 1px;
   margin: 0;
   vertical-align: middle;
@@ -90,7 +90,7 @@ h3 {
 }
 
 body {
-  color: #EEEEEE;
+  color: #646472;
   font-size: 13px;
   font-weight: 500;
 }
@@ -219,13 +219,13 @@ Buttons
 .btn-action-alt:hover {
   color: #FFFFFF;
   background-color: #005879;
-  border-color: #EEEEEE;
+  border-color: rgba(238, 238, 238, 0.5);
 }
 
 .btn-action-alt:active, .btn-action-alt:focus {
   color: #F7F7F7;
   background-color: #0085B3;
-  border-color: #EEEEEE;
+  border-color: rgba(238, 238, 238, 0.5);
 }
 
 .btn-action-alt i {
@@ -245,20 +245,21 @@ Buttons
   color: #646472;
   background-color: transparent;
   border-color: transparent;
+  cursor: pointer;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
   border-radius: 5px;
 }
 
 .btn-icon:hover {
-  color: #FFFFFF;
-  background-color: #0085B3;
+  color: #0085B3;
+  background-color: transparent;
   border-color: transparent;
 }
 
 .btn-icon:active {
-  color: #F7F7F7;
-  background-color: #005879;
+  color: #005879;
+  background-color: transparent;
   border-color: transparent;
 }
 
@@ -312,10 +313,14 @@ Other components.
 ========================================================================== */
 .card {
   padding: 1px;
-  border: 1px solid rgba(238, 238, 238, 0);
+  border: 1px solid rgba(204, 204, 204, 0);
   border-radius: 6px;
   background: #FFFFFF;
   box-shadow: box-shadow(card);
+}
+
+.emphasis {
+  font-weight: 700;
 }
 
 /* ==========================================================================
@@ -330,8 +335,7 @@ html, body, .viewport-container {
 
 body {
   position: relative;
-  min-width: 360px;
-  background-color: #EEEEEE;
+  background-color: #646472;
 }
 
 .scollable-x {
@@ -377,6 +381,7 @@ body {
   color: #646472;
   background-color: transparent;
   border-color: transparent;
+  cursor: pointer;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
   border-radius: 5px;
@@ -404,7 +409,6 @@ body {
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
-  font-size: 15px;
 }
 
 .modals-wrapper #modals-close .caption {
@@ -469,6 +473,8 @@ body {
   width: 100%;
   height: 100%;
   position: relative;
+  min-width: 360px;
+  min-height: 300px;
   overflow: scroll;
 }
 
@@ -487,6 +493,7 @@ body {
 
 .index-page .hero {
   position: relative;
+  color: #FFFFFF;
   background-color: rgba(0, 133, 178, 0.9);
 }
 
@@ -507,4 +514,130 @@ body {
   min-height: 60px;
   background-color: #EEEEEE;
   color: #646472;
+}
+
+.dashboard {
+  width: 100%;
+  height: 100%;
+  min-width: 700px;
+  min-height: 400px;
+  overflow: hidden;
+}
+
+.dashboard > * {
+  width: 100%;
+}
+
+.dashboard .header-bar {
+  height: 50px;
+  overflow: hidden;
+  padding: 0 30px;
+  color: #FFFFFF;
+  background-color: #0085B3;
+}
+
+.dashboard .header-options > * {
+  margin-left: 15px;
+}
+
+.dashboard #logout-btn {
+  height: 40px;
+  line-height: 2.0;
+}
+
+.dashboard .profile-photo {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(204, 204, 204, 0.5);
+  border-radius: 25px;
+  overflow: hidden;
+}
+
+.dashboard .workspace > * {
+  height: 100%;
+}
+
+.dashboard .workspace .photo-list {
+  width: 300px;
+}
+
+.dashboard .workspace > .divider-v {
+  background-color: #cccccc;
+}
+
+.photo-list {
+  background-color: #EEEEEE;
+  overflow: hidden;
+}
+
+.photo-list > .header {
+  height: 50px;
+}
+
+.photo-list > .header .divider-v {
+  height: 50px;
+}
+
+.photo-list .title {
+  padding-left: 30px;
+}
+
+.photo-list #open-upload {
+  height: 50px;
+  width: 50px;
+  border-radius: 0px;
+  padding: 0;
+}
+
+.photo-list #open-upload i {
+  margin: 0;
+}
+
+.photo-list .list {
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+}
+
+.photo-list .list .empty-prompt {
+  padding-top: 50px;
+  text-align: center;
+}
+
+.editor {
+  background: url("../img/logo-xl-grey.png") center center no-repeat;
+  background-color: #FFFFFF;
+  overflow: hidden;
+}
+
+.editor.active {
+  background: #FFFFFF;
+}
+
+.editor > .header {
+  height: 50px;
+}
+
+.editor > .header .divider-v {
+  height: 50px;
+}
+
+.editor .title {
+  padding-left: 30px;
+}
+
+.editor #open-upload {
+  height: 50px;
+  width: 50px;
+  border-radius: 0px;
+  padding: 0;
+}
+
+.editor #open-upload i {
+  margin: 0;
+}
+
+.editor .list .empty-prompt {
+  margin-top: 50px;
+  text-align: center;
 }

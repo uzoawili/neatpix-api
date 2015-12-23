@@ -10,7 +10,7 @@ install:
 script:
 - bower install
 - python neatpix/manage.py collectstatic --noinput --settings=neatpix.settings.testing
-- coverage run --source=webapp,api neatpix/manage.py test neatpix --settings=neatpix.settings.testing
+- coverage run --source=webapp neatpix/manage.py test neatpix --settings=neatpix.settings.testing
   -s
 after_success:
 - coveralls

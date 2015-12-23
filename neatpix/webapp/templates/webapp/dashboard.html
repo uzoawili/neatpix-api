@@ -4,8 +4,53 @@
 {% block window_title %}Dashboard{% endblock window_title %}
 
 {% block main %}
-  <main class="dashboard">
-  Hello, logged in as!
+  <main class="dashboard flex column-layout">
+
+    <header class="header-bar flex row-layout vertical align-center">
+      
+      <div class="brand">
+        <a href=""><img src="{% static 'img/logo-sm-white.png' %}"></a>
+      </div>
+
+      <div class="header-options fill flex row-layout align-middle-right">
+        <span>Logged in as <span class="emphasis">{{ request.user.first_name }} {{ request.user.last_name }}</span></span>
+        <a href="https://facebook.com" target="_blank" class="profile-photo imgLiquidFill thumb-image">
+          <img src="{{ request.user.social_profile.photo }}">
+        </a>
+        <a href="{% url 'webapp:logout' %}" class="btn-action-alt" id="logout-btn">Log Out</a>
+      </div>
+
+    </header>
+
+    <div class="workspace fill flex row-layout">
+      
+      <div class="photo-list">
+        
+        <div class="header flex row-layout vertical align-center">
+          <div class="title fill flex row-layout align-middle-left">
+            <h3 class="section-label">My Photos</h3 class=".section-label">
+          </div>
+          <div class="divider-v"></div>
+          <button class="btn-action" id="open-upload" title="Add a Photo"><i class="fa fa-plus fa-lg"></i></button>
+        </div>
+
+        <div class="divider"></div>
+
+        <ul class="list">
+          {% for photo in photos %}
+              <li>{{ athlete.name }}</li>
+          {% empty %}
+              <li class="empty-prompt flex row-layout horizontal align-center"><span>You currently have no uploaded photos.<br>
+              Use the ‘+’ button above to upload.</span></li>
+          {% endfor %}
+        </ul>
+
+      </div>
+
+      <div class="divider-v"></div>
+
+      <div class="editor fill"></div>
+    </div>
 
   </main>
 {% endblock main %}
