@@ -1,0 +1,50 @@
+{% load static %}
+
+<li class="photo-card" data-state="upload">
+
+  <div class="upload flex column-layout vertical align-center">
+    <div class="photo-icon imgLiquidFill imgFilled">
+      <img src="{% static 'img/photo-icon.png' %}">
+    </div>
+    <p class="instruction">Drag and drop OR<br><a href="" class="accent browse-file">Click here</a> to browse for image file.</p>
+    <p class="fileinfo"></p>
+    <div class="call-to-action">
+      <button class="btn-action upload-photo disabled"><i class="fa fa-cloud-upload fa-fw"></i> Upload</button>
+    </div>
+  </div>
+
+  <div class="uploading flex column-layout">
+    <p class="title">132493bf3430.jpg</p>
+    <div class="status">
+      <span class="message">uploading...</span>
+      <span class="value">63%</span>
+    </div>
+    <div class="progress-bar">
+      <span class="total"></span>
+      <span class="progress"></span>
+    </div>
+  </div>
+
+  <div class="uploaded flex column-layout">
+    <div class="image-wrapper imgLiquidFill imgFilled">
+      <img src="{% static 'img/sample-photo.png' %}">
+    </div>
+    <div class="details flex row-layout vertical align-center">
+      <div class="caption"><span>011cqfgkjsswg.jpg</span></div>
+      <div class="date fill"><span>2 days ago</span></div>
+    </div>
+    <div class="divider"></div>
+    <div class="actions flex row-layout horizontal align-middle vertical align-center">
+      <button class="btn-action subtle" title="Apply Effects"><i class="fa fa-magic fa-lg"></i></button>
+      <button class="btn-action subtle" title="Edit Caption"><i class="fa fa-font fa-lg"></i></button>
+      <button class="btn-action subtle" title="Share"><i class="fa fa-share-alt fa-lg"></i></button>
+      <button class="btn-action subtle" title="Download"><i class="fa fa-download fa-lg"></i></button>
+      <button class="btn-action subtle" title="Delete"><i class="fa fa-trash fa-lg"></i></button>
+    </div>
+  </div>
+  
+  <button class="btn-icon cancel-btn subtle" title="Cancel">
+    <i class="fa fa-times fa-lg"></i>
+  </button>
+
+</li>

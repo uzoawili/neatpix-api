@@ -38,7 +38,7 @@ p {
   height: 1px;
   margin: 0;
   overflow: hidden;
-  background-color: rgba(204, 204, 204, 0.5);
+  background-color: rgba(238, 238, 238, 0.5);
 }
 
 .divider-v {
@@ -46,10 +46,14 @@ p {
   height: 1px;
   margin: 0;
   overflow: hidden;
-  background-color: rgba(204, 204, 204, 0.5);
+  background-color: rgba(238, 238, 238, 0.5);
   width: 1px;
   margin: 0;
   vertical-align: middle;
+}
+
+.divider-shaded {
+  background-color: rgba(204, 204, 204, 0.5);
 }
 
 .badge {
@@ -319,8 +323,50 @@ Other components.
   box-shadow: box-shadow(card);
 }
 
+.scrollable-container {
+  position: relative;
+}
+
+.scrollable-container .scrollable-x, .scrollable-container .scrollable-y {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  padding: 15px;
+  overflow-y: scroll;
+}
+
+.scrollable-container .scrollable-x {
+  overflow-x: scroll;
+}
+
+.scrollable-container .scrollable-y {
+  overflow-y: scroll;
+}
+
+.scrollable-container .scrollable-x:hover, .scrollable-container .scrollable-y:hover {
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15) inset;
+  -webkit-transition: box-shadow .7s 1s;
+  transition: box-shadow .7s 1s;
+}
+
 .emphasis {
   font-weight: 700;
+}
+
+.accent {
+  color: #0085B3;
+  font-weight: 700;
+}
+
+.subtle {
+  color: #C3C3C8;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.2;
 }
 
 /* ==========================================================================
@@ -336,14 +382,6 @@ html, body, .viewport-container {
 body {
   position: relative;
   background-color: #646472;
-}
-
-.scollable-x {
-  overflow-x: scroll;
-}
-
-.scollable-y {
-  overflow-y: scroll;
 }
 
 .modals-wrapper {
@@ -521,6 +559,7 @@ body {
   height: 100%;
   min-width: 700px;
   min-height: 400px;
+  position: relative;
   overflow: hidden;
 }
 
@@ -529,11 +568,15 @@ body {
 }
 
 .dashboard .header-bar {
-  height: 50px;
+  min-height: 50px;
   overflow: hidden;
   padding: 0 30px;
   color: #FFFFFF;
   background-color: #0085B3;
+}
+
+.dashboard .header-bar .brand {
+  margin-top: 3px;
 }
 
 .dashboard .header-options > * {
@@ -548,9 +591,13 @@ body {
 .dashboard .profile-photo {
   width: 40px;
   height: 40px;
-  border: 1px solid rgba(204, 204, 204, 0.5);
+  border: 1px solid rgba(238, 238, 238, 0.5);
   border-radius: 25px;
   overflow: hidden;
+}
+
+.dashboard .workspace {
+  width: 100%;
 }
 
 .dashboard .workspace > * {
@@ -558,7 +605,10 @@ body {
 }
 
 .dashboard .workspace .photo-list {
-  width: 300px;
+  max-width: 300px;
+  -webkit-flex-basis: auto;
+      -ms-flex-preferred-size: auto;
+          flex-basis: auto;
 }
 
 .dashboard .workspace > .divider-v {
@@ -566,26 +616,27 @@ body {
 }
 
 .photo-list {
+  height: 100%;
   background-color: #EEEEEE;
   overflow: hidden;
 }
 
 .photo-list > .header {
-  height: 50px;
+  min-height: 50px;
 }
 
 .photo-list > .header .divider-v {
   height: 50px;
 }
 
-.photo-list .title {
+.photo-list > .header .title {
   padding-left: 30px;
 }
 
 .photo-list #open-upload {
   height: 50px;
   width: 50px;
-  border-radius: 0px;
+  border-radius: 0;
   padding: 0;
 }
 
@@ -594,50 +645,149 @@ body {
 }
 
 .photo-list .list {
-  width: 100%;
-  height: 100%;
   overflow: scroll;
+  padding: 15px;
 }
 
 .photo-list .list .empty-prompt {
-  padding-top: 50px;
+  padding-top: 40px;
   text-align: center;
 }
 
+.photo-card {
+  width: 100%;
+  position: relative;
+  background-color: #FFFFFF;
+  overflow: hidden;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.photo-card .upload {
+  width: 100%;
+  padding: 40px 20px 20px;
+}
+
+.photo-card .upload > * {
+  margin: 10px 0;
+}
+
+.photo-card .upload p {
+  text-align: center;
+}
+
+.photo-card .upload .photo-icon {
+  width: 90px;
+  height: 85px;
+}
+
+.photo-card .upload .call-to-action {
+  margin: 0;
+}
+
+.photo-card .uploading {
+  width: 100%;
+  padding: 10px;
+}
+
+.photo-card .uploading .title {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.photo-card .uploading .status {
+  margin-top: 10px;
+}
+
+.photo-card .uploading .status * {
+  display: block;
+}
+
+.photo-card .uploading .status .message {
+  font-style: italic;
+  float: left;
+}
+
+.photo-card .uploading .status .value {
+  float: right;
+  text-align: right;
+}
+
+.photo-card .uploading .progress-bar {
+  position: relative;
+  height: 3px;
+  margin-top: 7px;
+}
+
+.photo-card .uploading .progress-bar > * {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.photo-card .uploading .progress-bar .total {
+  background-color: #EEEEEE;
+}
+
+.photo-card .uploading .progress-bar .progress {
+  background-color: #0085B3;
+  width: 63%;
+}
+
+.photo-card .uploaded {
+  width: 100%;
+  padding: 1px;
+}
+
+.photo-card .uploaded .image-wrapper {
+  height: 180px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.photo-card .uploaded .details {
+  height: 50px;
+  padding: 10px;
+}
+
+.photo-card .uploaded .details .caption {
+  font-weight: 700;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-right: 10px;
+}
+
+.photo-card .uploaded .details .date {
+  text-align: right;
+}
+
+.photo-card .uploaded .actions {
+  height: 50px;
+}
+
+.photo-card .uploaded .actions .btn-action {
+  padding: 5px 10px;
+  margin: 0 3px;
+}
+
+.photo-card .uploaded .actions .btn-action i {
+  margin: 0;
+}
+
+.photo-card .cancel-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .editor {
-  background: url("../img/logo-xl-grey.png") center center no-repeat;
+  background: url("../img/logo-xl-grey.png") no-repeat;
+  background-position: center 45%;
   background-color: #FFFFFF;
   overflow: hidden;
 }
 
 .editor.active {
   background: #FFFFFF;
-}
-
-.editor > .header {
-  height: 50px;
-}
-
-.editor > .header .divider-v {
-  height: 50px;
-}
-
-.editor .title {
-  padding-left: 30px;
-}
-
-.editor #open-upload {
-  height: 50px;
-  width: 50px;
-  border-radius: 0px;
-  padding: 0;
-}
-
-.editor #open-upload i {
-  margin: 0;
-}
-
-.editor .list .empty-prompt {
-  margin-top: 50px;
-  text-align: center;
 }

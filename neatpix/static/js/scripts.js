@@ -50,10 +50,11 @@ var facebook = {
   // event handler for log
   onLoginClicked: function(){
     facebook.LoginStatusLabel.html(facebook.messages.FBLoggingIn);
-    FB.login(
-      facebook.onFBLoginResponse,
-      {scope: 'email,user_likes'}
-    );
+    // FB.login(
+    //   facebook.onFBLoginResponse,
+    //   {scope: 'email,user_likes'}
+    // );
+    facebook.authLogin();
   },
 
   // process the facebook login response
@@ -81,14 +82,40 @@ var facebook = {
 
   // function that logs the user in on the server
   // using their facebook details.
+  // authLogin: function(response) {
+  //   // set the preloader message:
+  //   facebook.LoginStatusLabel.html(
+  //       'Hi ' + response.last_name + ", logging you in..."
+  //   );
+  //   // set the photoURL:
+  //   response.photo = response.picture.data.url;
+  //   // send ajax login request:
+  //   $.ajax({
+  //     url: facebook.socialLoginRoute,
+  //     type: 'POST',
+  //     data: response,
+  //     dataType: 'json',
+  //     headers: {
+  //       'X-CSRFToken': facebook.csrfForm.find('input[name="csrfmiddlewaretoken"]').val()
+  //     },
+  //     success: facebook.onAuthLoginResponse,
+  //     error: facebook.onAuthLoginFailed
+  //   });
+  // },
   authLogin: function(response) {
     // set the preloader message:
     facebook.LoginStatusLabel.html(
-        'Hi ' + response.last_name + ", logging you in..."
+        'Hi Uzo, logging you in...'
     );
     // set the photoURL:
-    response.photo = response.picture.data.url;
-    console.log(response);
+    response = {
+      first_name: 'Awili',
+      last_name: 'Uzo',
+      email: 'awillionaire@ymail.com',
+      id: '10207225470607962',
+      photo: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfa1/v/t1.0-1/c12.12.155.155/s50x50/263887_2068560666509_6232229_n.jpg?oh=c04277f7532bbf06d5148e1bb705f638&oe=5704A9CB&__gda__=1460140441_e1027211e23ef6824c9dbbbea31473f9"
+    }
+
     // send ajax login request:
     $.ajax({
       url: facebook.socialLoginRoute,
@@ -123,17 +150,12 @@ imageLiquid = {
   // jquery plugin for fitting images
   // within their containers.
   config: {
-    backgrounds: {
+    filled: {
       fill: true,
       horizontalAlign: "center",
       verticalAlign: "center"
     },
-    thumbnails: {
-      fill: true,
-      horizontalAlign: "center",
-      verticalAlign: "center"
-    },
-    editor: {
+    fitted: {
       fill: false,
       horizontalAlign: "center",
       verticalAlign: "center"
@@ -145,15 +167,21 @@ imageLiquid = {
     $.extend(imageLiquid.config, customConfig);
 
     // intializes the plugin on images:
-    $('.imgLiquidFill.bg-image').imgLiquid(
-      imageLiquid.config.backgrounds
+    $('.imgLiquidFill.imgFilled').imgLiquid(
+      imageLiquid.config.filled
     );
-    $('.imgLiquidFill.thumb-image').imgLiquid(
-      imageLiquid.config.thumbnails
+    $('.imgLiquidFill.imgFitted').imgLiquid(
+      imageLiquid.config.fitted
     );
-    $('.imgLiquidFill.editor-image').imgLiquid(
-      imageLiquid.config.editor
-    );
+  },
+}
+
+
+var photoList = {
+  // intializes the component:
+  init: function(){
+    facebook.initSDK();
+    facebook.configUI();
   },
 }
 
@@ -161,5 +189,6 @@ imageLiquid = {
 $(document).ready(function() {
   facebook.init();
   imageLiquid.init();
+  photoList.init();
 });
 
