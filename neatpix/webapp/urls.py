@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from views import IndexView, FacebookAuthView,\
-                  DashboardView, LogoutView
+                  DashboardView, LogoutView,\
+                  PhotosListView
 
 
 urlpatterns = [
@@ -16,6 +17,10 @@ urlpatterns = [
     url(r'^dashboard/$',
         DashboardView.as_view(),
         name='dashboard'),
+
+    url(r'^dashboard/photos/$',
+        PhotosListView.as_view(),
+        name='photo_list'),
 
     url(r'^logout/$',
         LogoutView.as_view(),

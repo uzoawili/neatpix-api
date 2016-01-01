@@ -99,3 +99,19 @@ class DashboardView(LoginRequiredMixin, View):
         context = {}
         context.update(csrf(self.request))
         return render(self.request, 'webapp/dashboard.html', context)
+
+
+class PhotosListView(JsonResponseMixin, LoginRequiredMixin, View):
+    """
+    View to fetch the list of photos.
+    """
+    def get(self, request, *args, **kwargs):
+        """
+        Returns a JSON list of photos uploaded
+        by the current user.
+        """
+        photos = []
+        return {
+            'status': 'success',
+            'data': photos,
+        }

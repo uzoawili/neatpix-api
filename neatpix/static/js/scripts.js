@@ -178,11 +178,92 @@ imageLiquid = {
 
 
 var photoList = {
-  // intializes the component:
-  init: function(){
-    facebook.initSDK();
-    facebook.configUI();
+
+  items: [],
+
+  init: function(config){
+    // default settings:
+    settings = {
+      baseElement: $('.photo-list'),
+      addButton: $('.photo-list .add-photo'),
+      list: $('.photo-list .list'),
+      status: $('.photo-list .list-status'),
+
+      loadPhotosRoute: '/dashboard/photos/',
+
+      emptyStatusMsg: 'You currently have no uploaded photos.<br>Use the ‘+’ button above to upload.',
+      loadingMsg: '<i class="fa fa-spinner fa-fw fa-spin"></i> Loading...',
+      loadFailedMsg: '<i class="fa fa-frown-o fa-fw"></i> Sorry, an error occured. Your Photos could not be loaded!'
+    }
+    // customize settings with config if provided:
+    $.extend( settings, config );
+    // apply settings to the component:
+    $.extend( photoList, settings );
+    //run other initializations:
+    photoList.registerEventHandlers();
+    photoList.loadList();
   },
+
+  registerEventHandlers: function(statusMsg){
+    photoList.addButton.click(photoList.onAddPhotoClicked);
+  },
+
+  onAddPhotoClicked: function(){
+    console.log('+ add-photo button clicked!');
+  },
+
+  showStatus: function(statusMsg){
+    // hide the list:
+    photoList.list.hide();
+    // show set and show the status message:
+    photoList.status.html(statusMsg);
+    photoList.status.show();
+  }, 
+
+  showList: function(){
+    if (photoList.items.length) {
+      // clear and hide the status message:
+      photoList.status.html('');
+      photoList.status.hide();
+      // show the list:
+      photoList.list.show();
+    } else {
+      // show empty prompt:
+      photoList.showStatus(photoList.emptyStatusMsg);
+    }
+  },
+
+  loadList: function(){
+    // show the loading message:
+    photoList.showStatus(photoList.loadingMsg);
+    // send ajax request:
+    $.ajax({
+      url: photoList.loadPhotosRoute,
+      type: 'GET',
+      dataType: 'json',
+      success: photoList.onLoadResponse,
+      error: photoList.onLoadFailed
+    });
+  },
+
+  onLoadResponse: function(response) {
+    if (response.status == 'success'){
+      // process response data and load the list with it:
+      for(photo_data in response.data){
+        
+      }
+      // show the loaded list:
+      photoList.showList();
+    } else {
+      onLoadFailed();
+    }
+  },
+
+  onLoadFailed: function() {
+    // show failed prompt:
+    photoList.showStatus(photoList.loadFailedMsg);
+  }
+
 }
 
 

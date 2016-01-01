@@ -20,26 +20,30 @@
     <div class="workspace fill flex row-layout"> 
       
       <div class="photo-list fill flex column-layout">
+        
         <div class="header flex row-layout vertical align-center">
           <div class="title fill flex row-layout align-middle-left">
             <h3 class="section-label">My Photos</h3 class=".section-label">
           </div>
           <div class="divider-v divider-shaded"></div>
-          <button class="btn-action" id="open-upload" title="Upload a Photo"><i class="fa fa-plus fa-lg"></i></button>
+          <button class="btn-action add-photo" title="Upload a Photo"><i class="fa fa-plus fa-lg"></i></button>
         </div>
+        
         <div class="divider divider-shaded"></div>
-        <ul class="list fill scrollable-container">
-          <div class="scrollable-y">
-            {% for photo in photos %}
-                <li>{{ athlete.name }}</li>
-            {% empty %}
-               <!--<li class="empty-prompt flex row-layout horizontal align-center"><span>You currently have no uploaded photos.<br>
-                Use the ‘+’ button above to upload.</span></li>-->
-            {% endfor %}
-            {% include "webapp/snippet_photo_card.html" %}
+        
+        <div class="content fill flex column-layout">
+          <ul class="list fill scrollable-container">
+            <div class="scrollable-y">
+              {% include "webapp/snippet_photo_card.html" %}
+            </div>
+          </ul>
+          <div class="list-status">
+            <span>You currently have no uploaded photos.<br>Use the ‘+’ button above to upload.</span>
           </div>
-        </ul>
+        </div>
+
       </div>
+
       <div class="divider-v"></div>
       <div class="editor fill"></div>
     </div>

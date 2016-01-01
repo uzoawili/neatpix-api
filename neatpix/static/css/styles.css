@@ -633,25 +633,36 @@ body {
   padding-left: 30px;
 }
 
-.photo-list #open-upload {
+.photo-list .add-photo {
   height: 50px;
   width: 50px;
   border-radius: 0;
   padding: 0;
 }
 
-.photo-list #open-upload i {
+.photo-list .add-photo i {
   margin: 0;
 }
 
-.photo-list .list {
-  overflow: scroll;
-  padding: 15px;
+.photo-list .content {
+  position: relative;
 }
 
-.photo-list .list .empty-prompt {
+.photo-list .content .list {
+  overflow: scroll;
+  padding: 15px;
+  display: none;
+}
+
+.photo-list .content .list-status {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
   padding-top: 40px;
   text-align: center;
+  display: none;
 }
 
 .photo-card {
