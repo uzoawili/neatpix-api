@@ -756,6 +756,7 @@ body {
   height: 180px;
   border-radius: 5px;
   overflow: hidden;
+  background-color: #EEEEEE;
 }
 
 .photo-card .uploaded .details {

@@ -338,7 +338,10 @@ var PhotoCard = function(config){
     },
 
     buildPhotoURL: function(photoData) {
-      photoURL = location.host + this.baseImageURL + photoData.public_id + '/' + photoData.effects + '/';
+      console.log(photoData.effects);
+      var photoURL = location.host + this.baseImageURL + photoData.public_id + '/';
+      if(photoData.effects)
+        photoURL += photoData.effects + '/';
       return photoURL;
     },
 
