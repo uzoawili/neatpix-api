@@ -1,5 +1,10 @@
+import os
+
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.humanize.templatetags.humanize import naturalday
+from django.template.defaultfilters import title
+
 from utils import genuid, get_photo_upload_path
 
 
@@ -44,9 +49,11 @@ class Photo(models.Model):
         """
         return {
             'public_id': self.public_id,
+            'filename': os.path.basename(self.image.name),
+            'username': self.user.username,
             'caption': self.caption,
             'effects': self.effects,
-            'date': self.date_modified,
+            'date': title(naturalday(self.date_modified)),
         }
 
     def __unicode__(self):

@@ -1,11 +1,14 @@
 import json
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.core.context_processors import csrf
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import View
+from django.http import HttpResponse
+
+from PIL import Image
 
 from models import Photo
 from forms import FacebookAuthForm, PhotoForm
@@ -132,7 +135,7 @@ class PhotoUploadView(JsonResponseMixin, LoginRequiredMixin, View):
         if photoForm.is_valid():
             # save the photo and image file:
             photo = photoForm.save(commit=False)
-            # set the default caption as the new filename:
+            # set the default caption and user:
             photo.caption = photo.image.name
             photo.user = request.user
             photo.save()
@@ -143,3 +146,32 @@ class PhotoUploadView(JsonResponseMixin, LoginRequiredMixin, View):
             }
         # return error response
         return {'status': 'invalid', }
+
+
+class PhotoServiceView(View):
+    """
+    View to handle serving uploaded photos with
+    effects (optional) applied.
+    """
+    def get(self, request, *args, **kwargs):
+        """
+        Accepts a photo's public_id and optionally a list of
+        effects to apply. Returns the image (FileResponse)
+        with the applied effects.
+        """
+        # get the captured image specs from the url:
+        filename = kwargs.get('filename')
+        effects = kwargs.get('effects')
+        fileinfo = filename.split('.')
+        public_id = fileinfo[0]
+        ext = fileinfo[1]
+        # get the associated photo instance:
+        photo = get_object_or_404(Photo, public_id=public_id)
+        # get a pillow image instance for the photo:
+        image = Image.open(photo.image.path)
+        # save the image to a FileResponse instance:
+        content_type = "image/{}".format(ext,)
+        response = HttpResponse(content_type=content_type)
+        image.save(response, image.format)
+
+        return response
