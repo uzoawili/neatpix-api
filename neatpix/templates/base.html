@@ -46,8 +46,13 @@
 
   {% block main %}
     {# The main content of the page (added in extending/subclassing templates) goes here. #}
-    {# NOTE: the <main> tag is excluded from the main block so subclassing templates need not include them. #}
   {% endblock main %}
+
+  <div class="generic-snippets">
+  {% block generic_snippets %}
+    {# This section holds content that has no display purpose but rather serve as generic snippets that can be cloned to create other concrete elements. #}
+  {% endblock generic_snippets %}
+  </div>
 
   </div> <!-- ends viewport container -->
 
@@ -57,8 +62,12 @@
   <script src="{% static 'lib/jquery/dist/jquery.min.js' %}"></script>
   <!-- Bootstrap Core -->
   <script src="{% static 'lib/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-  <!-- ImageLiquid-->
+  <!-- ImageLiquid -->
   <script src="{% static 'js/imgLiquid-min.js' %}"></script>
+  <!-- jQuery File Upload Dependencies -->
+  <script src="{% static 'lib/jquery-file-upload/js/vendor/jquery.ui.widget.js' %}"></script>
+  <script src="{% static 'lib/jquery-file-upload/js/jquery.iframe-transport.js' %}"></script>
+  <script src="{% static 'lib/jquery-file-upload/js/jquery.fileupload.js' %}"></script>
   <!-- Neatpix js-->
   <script src="{% static 'js/scripts.js' %}"></script>
   

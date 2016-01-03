@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from models import SocialProfile
+from models import SocialProfile, Photo
 
 
 class FacebookAuthForm(forms.Form):
@@ -58,3 +58,12 @@ class FacebookAuthForm(forms.Form):
 
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         return user
+
+
+class PhotoForm(forms.ModelForm):
+    """
+    Form to handle photo uploads.
+    """
+    class Meta:
+        model = Photo
+        fields = ('image', 'caption', 'effects')

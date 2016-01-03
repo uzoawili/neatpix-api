@@ -34,11 +34,11 @@
         <div class="content fill flex column-layout">
           <ul class="list fill scrollable-container">
             <div class="scrollable-y">
-              {% include "webapp/snippet_photo_card.html" %}
+              <!-- photo-list items go here -->
             </div>
           </ul>
           <div class="list-status">
-            <span>You currently have no uploaded photos.<br>Use the ‘+’ button above to upload.</span>
+            <!-- photo-list statuses go here -->
           </div>
         </div>
 
@@ -49,3 +49,7 @@
     </div>
   </div>
 {% endblock main %}
+
+{% block generic_snippets %}
+  {% include "webapp/snippet_photo_card.html" %}
+{% endblock generic_snippets %}

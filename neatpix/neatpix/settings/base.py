@@ -38,7 +38,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django_nose',
-    'rest_framework',
     'widget_tweaks',
     'webapp',
 )
@@ -119,6 +118,16 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
+
+# user uploaded files
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL = '/media/'
+
+
+# Tests
+
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 
@@ -129,18 +138,8 @@ PAGE_LIMIT = 10
 PAGE_ORPHANS = 2
 
 
-# Django REST Framework:
+# Photo settings
 
-REST_FRAMEWORK = {
+UID_ALPHABET = 'abcdefghijklmnopqrstuvwxyz0123456789'
 
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
-    'DEFAULT_PAGINATION_CLASS': 'api.utils.APIResultsSetPagination',
-
-    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
-
-}
+UID_LENGTH = 12

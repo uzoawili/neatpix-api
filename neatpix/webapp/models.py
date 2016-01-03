@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from utils import genuid, get_photo_upload_path
 
 
 class SocialProfile(models.Model):
@@ -21,3 +22,34 @@ class SocialProfile(models.Model):
 
     def __unicode__(self):
         return "{}:{}".format(self.provider, self.social_id)
+
+
+class Photo(models.Model):
+    """
+    Represents information about photos
+    uploaded by the current user.
+    """
+    image = models.ImageField(upload_to=get_photo_upload_path, max_length=255)
+    public_id = models.CharField(default=genuid, max_length=50)
+    caption = models.CharField(max_length=255, blank=True)
+    effects = models.CharField(max_length=255, blank=True)
+    date_created = models.DateField(editable=False, auto_now_add=True)
+    date_modified = models.DateField(editable=False, auto_now=True)
+
+    user = models.ForeignKey(User, related_name='photos')
+
+    def serialize(self):
+        """
+        serializes the photo to a json-style dictionary.
+        """
+        return {
+            'public_id': self.public_id,
+            'caption': self.caption,
+            'effects': self.effects,
+            'date': self.date_modified,
+        }
+
+    def __unicode__(self):
+        return "<Photo: {}-{}".format(self.caption, self.public_id)
+
+

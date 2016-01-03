@@ -334,7 +334,6 @@ Other components.
   top: 0;
   bottom: 0;
   padding: 15px;
-  overflow-y: scroll;
 }
 
 .scrollable-container .scrollable-x {
@@ -601,7 +600,7 @@ body {
 }
 
 .dashboard .workspace > * {
-  height: 100%;
+  min-height: 100%;
 }
 
 .dashboard .workspace .photo-list {
@@ -616,7 +615,6 @@ body {
 }
 
 .photo-list {
-  height: 100%;
   background-color: #EEEEEE;
   overflow: hidden;
 }
@@ -651,7 +649,6 @@ body {
 .photo-list .content .list {
   overflow: scroll;
   padding: 15px;
-  display: none;
 }
 
 .photo-list .content .list-status {
@@ -660,9 +657,8 @@ body {
   right: 0;
   top: 0;
   bottom: 0;
-  padding-top: 40px;
+  padding: 40px 20px 20px;
   text-align: center;
-  display: none;
 }
 
 .photo-card {
@@ -672,6 +668,7 @@ body {
   overflow: hidden;
   border-radius: 5px;
   margin-bottom: 15px;
+  padding: 0;
 }
 
 .photo-card .upload {
@@ -696,12 +693,16 @@ body {
   margin: 0;
 }
 
+.photo-card .upload .upload-form {
+  display: none;
+}
+
 .photo-card .uploading {
   width: 100%;
   padding: 10px;
 }
 
-.photo-card .uploading .title {
+.photo-card .uploading .filename {
   font-weight: 700;
   font-size: 13px;
 }
@@ -738,11 +739,12 @@ body {
 
 .photo-card .uploading .progress-bar .total {
   background-color: #EEEEEE;
+  width: 100%;
 }
 
 .photo-card .uploading .progress-bar .progress {
   background-color: #0085B3;
-  width: 63%;
+  width: 0%;
 }
 
 .photo-card .uploaded {
@@ -778,6 +780,7 @@ body {
 }
 
 .photo-card .uploaded .actions .btn-action {
+  min-width: 45px;
   padding: 5px 10px;
   margin: 0 3px;
 }

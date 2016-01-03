@@ -7,7 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 
-from forms import FacebookAuthForm
+from models import Photo
+from forms import FacebookAuthForm, PhotoForm
 from decorators import json_response
 
 
@@ -110,8 +111,35 @@ class PhotosListView(JsonResponseMixin, LoginRequiredMixin, View):
         Returns a JSON list of photos uploaded
         by the current user.
         """
-        photos = []
+        photos = Photo.objects.filter(user=request.user).all()
+        photos = [photo.serialize() for photo in photos]
         return {
             'status': 'success',
             'data': photos,
         }
+
+
+class PhotoUploadView(JsonResponseMixin, LoginRequiredMixin, View):
+    """
+    View to handle photo uploads.
+    """
+    def post(self, request, *args, **kwargs):
+        """
+        Handles the upload of photos and returns
+        a JSON serialization of the uploaded photo.
+        """
+        photoForm = PhotoForm(request.POST, request.FILES)
+        if photoForm.is_valid():
+            # save the photo and image file:
+            photo = photoForm.save(commit=False)
+            # set the default caption as the new filename:
+            photo.caption = photo.image.name
+            photo.user = request.user
+            photo.save()
+            # return the serialized photo:
+            return {
+                'status': 'success',
+                'photoData': photo.serialize(),
+            }
+        # return error response
+        return {'status': 'invalid', }
