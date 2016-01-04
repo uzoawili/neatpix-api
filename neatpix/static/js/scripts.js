@@ -329,6 +329,7 @@ var PhotoCard = function(config){
     },
 
     setEvents: function() {
+      this.clearEvents();
       // register event listeners based on this.currentState.
       if(this.currentState == this.states.UPLOAD){
           this.browseBtn.click(this.onUploadBrowse);
@@ -338,6 +339,12 @@ var PhotoCard = function(config){
       }else if(this.currentState == this.states.UPLOADED){
           this.applyEffectsBtn.click(this.openInEditor);
       }
+    },
+
+    clearEvents: function() {
+      // clear event listeners.
+      this.browseBtn.off('click');
+      this.applyEffectsBtn.off('click');
     },
 
     onUploadBrowse: function(e) {
@@ -424,7 +431,6 @@ var PhotoCard = function(config){
     },
 
     save: function(photoData){
-      console.log(photoData);
       // build the request url:
       url = photoCard.baseUpdateDeleteURL + photoData.public_id + '/';
       // send ajax login request:
@@ -442,7 +448,6 @@ var PhotoCard = function(config){
     },
 
     onSaveResponse: function(response) {
-      console.log(response);
       if (response.status == 'success'){
         // reset the photoCard uploaded state:
         photoCard.setState(photoCard.states.UPLOADED, response.photoData);
@@ -577,12 +582,12 @@ var editor = {
     } else {
       effectPhotoData.effects = $(this).data('effectName');
     }
-    // update the stage image with effect:
-    editor.setStageImage(effectPhotoData);
-    // update the caption/effect text:
-    editor.setEffectsText(effectPhotoData.effects);
     // update the editor.photoData
     editor.photoData = effectPhotoData;
+    // update the stage image with effect:
+    editor.setStageImage(editor.photoData);
+    // update the caption/effect text:
+    editor.setEffectsText(editor.photoData.effects);
   },
 
   resetEffects: function() {
@@ -629,15 +634,27 @@ var editor = {
   },
 
   setEvents: function() {
+    this.clearEvents();
     this.saveButton.click(this.saveEffects);
     this.resetButton.click(this.resetEffects);
     this.cancelButton.click(this.closePhoto);
     this.cumulativeCheckbox.change(this.setCumulative);
-    // register event listeners effect items:
+    // register event listeners on effect items:
     this.effectItems.each(function(){
       $(this).click(editor.applyEffect);
     });
   },
+
+  clearEvents: function() {
+    this.saveButton.off('click');
+    this.resetButton.off('click');
+    this.cancelButton.off('click');
+    this.cumulativeCheckbox.off('change');
+    // clear event listeners on effect items:
+    this.effectItems.each(function(){
+      $(this).off('click');
+    });
+  }
 }
 
 
