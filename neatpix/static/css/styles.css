@@ -837,6 +837,10 @@ body {
   margin: 0 2px;
 }
 
+.editor .stage {
+  background-color: #EEEEEE;
+}
+
 .editor > .effects-section {
   position: relative;
   min-height: 190px;
@@ -855,15 +859,16 @@ body {
 }
 
 .editor > .effects-section .list .scrollable-x {
-  padding: 50px 0 15px;
+  padding: 50px 15px 15px;
 }
 
-.editor > .effects-section .directive {
+.editor > .effects-section .effects-header {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 50px;
+  padding: 0 30px;
 }
 
 .effect-card {

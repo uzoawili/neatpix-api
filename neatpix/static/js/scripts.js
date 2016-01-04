@@ -102,33 +102,6 @@ var facebook = {
       error: facebook.onAuthLoginFailed
     });
   },
-  // authLogin: function(response) {
-  //   // set the preloader message:
-  //   facebook.LoginStatusLabel.html(
-  //       'Hi Uzo, logging you in...'
-  //   );
-  //   // set the photoURL:
-  //   response = {
-  //     first_name: 'Awili',
-  //     last_name: 'Uzo',
-  //     email: 'awillionaire@ymail.com',
-  //     id: '10207225470607962',
-  //     photo: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfa1/v/t1.0-1/c12.12.155.155/s50x50/263887_2068560666509_6232229_n.jpg?oh=c04277f7532bbf06d5148e1bb705f638&oe=5704A9CB&__gda__=1460140441_e1027211e23ef6824c9dbbbea31473f9"
-  //   }
-
-  //   // send ajax login request:
-  //   $.ajax({
-  //     url: facebook.socialLoginRoute,
-  //     type: 'POST',
-  //     data: response,
-  //     dataType: 'json',
-  //     headers: {
-  //       'X-CSRFToken': facebook.csrfForm.find('input[name="csrfmiddlewaretoken"]').val()
-  //     },
-  //     success: facebook.onAuthLoginResponse,
-  //     error: facebook.onAuthLoginFailed
-  //   });
-  // },
 
   onAuthLoginResponse: function(response) {
     if (response.status == 'success'){
@@ -181,12 +154,15 @@ var photoList = {
   },
 
   addNewPhoto: function(){
-    if(photoList.currentUploadCard)
+    if(photoList.currentUploadCard){
+      photoList.scrollToItem(photoList.currentUploadCard);
       return;
+    }
     var photoCard = PhotoCard();
     photoCard.setState(photoCard.states.UPLOAD);
     photoList.add(photoCard);
     photoList.currentUploadCard = photoCard;
+    photoList.scrollToItem(photoCard);
     photoList.showList();
   },
 
@@ -250,6 +226,10 @@ var photoList = {
     this.list.prepend(photoCard.baseElement);
     photoCard.photoList = this;
     photoCard.setEvents();
+  },
+
+  scrollToItem: function(photoCard){
+    photoList.list.scrollTop(photoCard.baseElement.position().top);
   }
 
 }
@@ -353,7 +333,7 @@ var PhotoCard = function(config){
           
 
       }else if(this.currentState == this.states.UPLOADED){
-          
+          this.applyEffectsBtn.click(this.openInEditor);
       }
     },
 
@@ -435,10 +415,171 @@ var PhotoCard = function(config){
       });
     },
 
+    openInEditor:function(e){
+      e.preventDefault();
+      editor.openPhoto(photoCard);
+    }
+
   }
 
   photoCard.init(config);
   return photoCard;
+}
+
+
+var editor = {
+
+  init: function(config){
+    // default settings:
+    settings = {
+      baseElement: $('.editor'),
+      caption: $('.editor .title .caption'),
+      effects: $('.editor .title .effects'),
+      saveButton: $('.options .save-changes'),
+      cumulativeCheckbox: $('.effects-header #cumulative-cbox'),
+      resetButton: $('.options .reset'),
+      cancelButton: $('.options .cancel'),
+      stageImage: $('.stage img'),
+      effectItems: $('.effect-card'),
+
+      baseImageURL: '/media/photos/',
+      useCumulativeEffects: false,
+    }
+    // customize settings with config if provided:
+    $.extend( settings, config );
+    // apply settings to the component:
+    $.extend( this, settings );
+    //run other initializations:
+    this.closeUI();
+  },
+
+  closeUI: function(){
+    // hide all the direct children of the editor
+    // until a photo is selected for editing:
+    this.baseElement.children().css('opacity', 0);
+    this.baseElement.children().css('pointer-events', 'none');
+    this.baseElement.removeClass('active');
+  }, 
+
+  openUI: function(){
+    // hide all the direct children of the editor
+    // until a photo is selected for editing:
+    this.baseElement.children().css('opacity', 1);
+    this.baseElement.children().css('pointer-events', 'auto');
+    this.baseElement.addClass('active');
+  },
+
+  openPhoto: function(photoCard){
+    this.currentPhotoCard = photoCard;
+    this.photoData = $.extend( {}, photoCard.photoData );
+    // update the caption/effect text:
+    this.caption.text(this.photoData.caption);
+    this.setEffectsText(this.photoData.effects);
+    // set the stage image source to that of the photoCard:
+    this.setStageImage(this.photoData);
+    // for each effects list item, set the image source to that
+    // of the photoCard with specific effect applied:
+    this.effectItems.each(function(){
+      effectImage = $(this).find('img');
+      effectPhotoData = $.extend( {}, editor.photoData );
+      effectPhotoData.effects = $(this).data('effectName');
+      effectImage.attr('src', editor.buildPhotoURL(effectPhotoData));
+      effectImage.closest('.image-wrapper').imgLiquid(imageLiquid.config.filled);
+    });
+    // set the initial state of the cumulative checkbox:
+    this.cumulativeCheckbox.prop( "checked", this.useCumulativeEffects );
+    // set events for editor UI components:
+    this.setEvents();
+    //show the editor:
+    this.openUI();
+    // scroll photoList to that photoCard's position:
+    // photoList.scrollToItem(photoCard);
+  },
+
+  closePhoto: function(){
+    editor.currentPhotoCard = null;
+    editor.photoData = null;
+    // clear the caption/effect text:
+    editor.caption.text('');
+    editor.setEffectsText('');
+    // set the stage image source to that of the photoCard:
+    editor.stageImage.attr('src', '');
+    editor.stageImage.closest('.image-wrapper').imgLiquid(imageLiquid.config.filled);
+    // for each effects list item, clear the image source:
+    editor.effectItems.each(function(){
+      effectImage = $(this).find('img');
+      effectImage.attr('src', '');
+      effectImage.closest('.image-wrapper').imgLiquid(imageLiquid.config.filled);
+    });
+    //close the editor:
+    editor.closeUI();
+  },
+
+  buildPhotoURL: function(photoData) {
+    var photoURL = this.baseImageURL + photoData.username + '/';
+    if(photoData.effects)
+      photoURL += photoData.effects + '/';
+    photoURL += photoData.filename;
+    return photoURL;
+  },
+
+  applyEffect: function() {
+    // apply the effect to th stage image:
+    effectPhotoData = $.extend( {}, editor.photoData );
+    // append the new effect if cumulative is set:
+    if(editor.useCumulativeEffects){
+      if(effectPhotoData.effects) effectPhotoData.effects += ",";
+      effectPhotoData.effects += $(this).data('effectName');
+    } else {
+      effectPhotoData.effects = $(this).data('effectName');
+    }
+    // update the stage image with effect:
+    editor.setStageImage(effectPhotoData);
+    // update the caption/effect text:
+    editor.setEffectsText(effectPhotoData.effects);
+    // update the editor.photoData
+    editor.photoData = effectPhotoData;
+  },
+
+  resetEffects: function() {
+    // clear the effects on editor.photoData
+    editor.photoData.effects = '';
+    // update the stage image with effect:
+    editor.setStageImage(editor.photoData);
+    // update the caption/effect text:
+    editor.setEffectsText(editor.photoData.effects);
+  },
+
+  saveEffects: function() {
+    
+  },
+
+  setEffectsText: function(effectsText){
+    if(effectsText)
+      editor.effects.text(" : " + effectsText);
+    else 
+      editor.effects.text('');
+  },
+
+  setStageImage: function(photoData){
+    editor.stageImage.attr('src', editor.buildPhotoURL(photoData));
+    editor.stageImage.closest('.image-wrapper').imgLiquid(imageLiquid.config.fitted);
+  },
+
+  setCumulative: function(e) {
+    editor.useCumulativeEffects = $(this).is(':checked');
+  },
+
+  setEvents: function() {
+    this.saveButton.click(this.saveEffects);
+    this.resetButton.click(this.resetEffects);
+    this.cancelButton.click(this.closePhoto);
+    this.cumulativeCheckbox.change(this.setCumulative);
+    // register event listeners effect items:
+    this.effectItems.each(function(){
+      $(this).click(editor.applyEffect);
+    });
+  },
 }
 
 
@@ -476,6 +617,7 @@ var imageLiquid = {
 $(document).ready(function() {
   facebook.init();
   photoList.init();
+  editor.init();
   imageLiquid.init();
 });
 

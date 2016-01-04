@@ -102,7 +102,9 @@ class DashboardView(LoginRequiredMixin, View):
         Renders the dashboard view.
         """
         # show index view:
-        context = {}
+        context = {
+            'photo_effects': photo_effects,
+        }
         context.update(csrf(self.request))
         return render(self.request, 'webapp/dashboard.html', context)
 
