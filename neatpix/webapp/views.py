@@ -116,7 +116,9 @@ class PhotosListView(JsonResponseMixin, LoginRequiredMixin, View):
         Returns a JSON list of photos uploaded
         by the current user.
         """
-        photos = Photo.objects.filter(user=request.user).all()
+        photos = Photo.objects.filter(user=request.user)\
+                              .order_by('date_created')\
+                              .all()
         photos = [photo.serialize() for photo in photos]
         return {
             'status': 'success',

@@ -38,8 +38,8 @@ class Photo(models.Model):
     public_id = models.CharField(default=genuid, max_length=50)
     caption = models.CharField(max_length=255, blank=True)
     effects = models.CharField(max_length=255, blank=True)
-    date_created = models.DateField(editable=False, auto_now_add=True)
-    date_modified = models.DateField(editable=False, auto_now=True)
+    date_created = models.DateTimeField(editable=False, auto_now_add=True)
+    date_modified = models.DateTimeField(editable=False, auto_now=True)
 
     user = models.ForeignKey(User, related_name='photos')
 
