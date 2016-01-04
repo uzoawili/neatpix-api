@@ -241,6 +241,7 @@ var PhotoCard = function(config){
     photoData: null,
 
     baseImageURL: '/media/photos/',
+    baseUpdateDeleteURL: '/dashboard/photos/',
 
     states: {
       UPLOAD: 'upload',
@@ -278,6 +279,8 @@ var PhotoCard = function(config){
       settings.sharePhotoBtn = settings.uploadedDiv.find('.share-photo');
       settings.downloadPhotoBtn = settings.uploadedDiv.find('.download-photo');
       settings.deletePhotoBtn = settings.uploadedDiv.find('.delete-photo');
+
+      settings.csrfForm = settings.uploadedDiv.find('.csrf-form');
 
       // customize settings with config if provided:
       $.extend( settings, config );
@@ -379,7 +382,7 @@ var PhotoCard = function(config){
         photoCard.onUploadFail();
     },
 
-    onUploadFail:function(e, data){
+    onUploadFail: function(e, data){
       // Something has gone wrong!
       photoCard.statusMsg = 'Upload failed!'
       photoCard.statusMsg.addClass('error');
@@ -398,12 +401,12 @@ var PhotoCard = function(config){
         return (bytes / 1000).toFixed(2) + ' KB';
     },
 
-    initFileUpload:function(){
+    initFileUpload: function(){
       // init the fileupload plugin on the uploadForm
       this.uploadForm.fileupload({
         dataType: 'json',
         dropZone: this.uploadDiv,
-        // acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+        acceptFileTypes: /(\.|\/)(gif|bmp|jpe?g|png)$/i,
         add: this.onUploadAdd,
         progress: this.onUploadProgress,
         done: this.onUploadSuccess,
@@ -415,9 +418,50 @@ var PhotoCard = function(config){
       });
     },
 
-    openInEditor:function(e){
+    openInEditor: function(e){
       e.preventDefault();
       editor.openPhoto(photoCard);
+    },
+
+    save: function(photoData){
+      console.log(photoData);
+      // build the request url:
+      url = photoCard.baseUpdateDeleteURL + photoData.public_id + '/';
+      // send ajax login request:
+      $.ajax({
+        url: url,
+        type: 'POST',
+        data: photoData,
+        dataType: 'json',
+        headers: {
+          'X-CSRFToken': photoCard.csrfForm.find('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: photoCard.onSaveResponse,
+        error: photoCard.onSaveFailed
+      });
+    },
+
+    onSaveResponse: function(response) {
+      console.log(response);
+      if (response.status == 'success'){
+        // reset the photoCard uploaded state:
+        photoCard.setState(photoCard.states.UPLOADED, response.photoData);
+        // show success toast:
+
+        // inform the editor:
+        if (editor.currentPhotoCard == photoCard)
+          editor.onSaveSuccess();
+      } else {
+        onSaveFailed();
+      }
+    },
+
+    onSaveFailed: function() {
+      // show failure toast:
+
+      // inform the editor:
+      if (editor.currentPhotoCard == photoCard)
+        editor.onSaveFailed();
     }
 
   }
@@ -444,7 +488,7 @@ var editor = {
 
       baseImageURL: '/media/photos/',
       useCumulativeEffects: false,
-    }
+         }
     // customize settings with config if provided:
     $.extend( settings, config );
     // apply settings to the component:
@@ -551,7 +595,21 @@ var editor = {
   },
 
   saveEffects: function() {
-    
+    editor.effects.html(
+      ' <i class="fa fa-spinner fa-fw fa-spin"></i> Saving effects...'
+    );
+    editor.currentPhotoCard.save(editor.photoData);
+  },
+
+  onSaveSuccess: function(response) {
+    //refresh the editor:
+    editor.openPhoto(editor.currentPhotoCard);
+  },
+
+  onSaveFailed: function() {
+    editor.effects.html(
+      ' <i class="fa fa-frown-o fa-fw"></i> Sorry, the applied effects could not be saved!'
+    );
   },
 
   setEffectsText: function(effectsText){
