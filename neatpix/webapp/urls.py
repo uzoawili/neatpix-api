@@ -31,7 +31,8 @@ urlpatterns = [
         PhotoUploadView.as_view(),
         name='photo_upload'),
 
-    url(r'^media/photos/(?P<username>[\w\-]+)/((?P<effects>[\w\,]+)/)?(?P<filename>[\w\-\.]+)$',
+    url(r'^media/photos/(?P<username>[\w\-]+)/' +
+        r'((?P<effects>[\w\,]+)/)?(?P<filename>[\w\-\.]+)$',
         PhotoServiceView.as_view(),
         name='photo_service'),
 

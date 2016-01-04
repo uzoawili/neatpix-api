@@ -338,7 +338,6 @@ var PhotoCard = function(config){
     },
 
     buildPhotoURL: function(photoData) {
-      console.log(photoData);
       var photoURL = this.baseImageURL + photoData.username + '/';
       if(photoData.effects)
         photoURL += photoData.effects + '/';

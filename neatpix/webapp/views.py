@@ -1,3 +1,4 @@
+import os
 import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
@@ -13,6 +14,7 @@ from PIL import Image
 from models import Photo
 from forms import FacebookAuthForm, PhotoForm
 from decorators import json_response
+from effects import photo_effects
 
 
 class LoginRequiredMixin(object):
@@ -153,6 +155,9 @@ class PhotoServiceView(View):
     View to handle serving uploaded photos with
     effects (optional) applied.
     """
+    content_type = "image/jpg"
+    output_format = "JPEG"
+
     def get(self, request, *args, **kwargs):
         """
         Accepts a photo's public_id and optionally a list of
@@ -162,16 +167,23 @@ class PhotoServiceView(View):
         # get the captured image specs from the url:
         filename = kwargs.get('filename')
         effects = kwargs.get('effects')
-        fileinfo = filename.split('.')
-        public_id = fileinfo[0]
-        ext = fileinfo[1]
+        public_id, ext = os.path.splitext(filename)
         # get the associated photo instance:
         photo = get_object_or_404(Photo, public_id=public_id)
         # get a pillow image instance for the photo:
         image = Image.open(photo.image.path)
+        # apply any specified effects:
+        if effects:
+            effects = effects.split(',')
+            for effect_name in effects:
+                # get the effect function
+                effect = photo_effects.get(effect_name)
+                if effect:
+                    # apply the effect to the image:
+                    image = effect(image)
+
         # save the image to a FileResponse instance:
-        content_type = "image/{}".format(ext,)
-        response = HttpResponse(content_type=content_type)
-        image.save(response, image.format)
+        response = HttpResponse(content_type=self.content_type)
+        image.save(response, self.output_format)
 
         return response

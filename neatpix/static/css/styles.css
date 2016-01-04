@@ -671,6 +671,12 @@ body {
   padding: 0;
 }
 
+.photo-card:hover {
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15);
+  -webkit-transition: box-shadow .7s 1s;
+  transition: box-shadow .7s 1s;
+}
+
 .photo-card .upload {
   width: 100%;
   padding: 40px 20px 20px;
