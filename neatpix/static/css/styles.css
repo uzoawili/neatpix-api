@@ -160,14 +160,15 @@ Buttons
           appearance: none;
   overflow: hidden;
   border: 1px solid;
-  height: 40px;
+  height: 36px;
   display: inline-block;
   border-radius: 5px;
   padding: 5px 20px;
   min-width: -webkit-max-content;
   min-width: -moz-max-content;
   min-width: max-content;
-  font-size: 14px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 13px;
   font-weight: 700;
   text-align: center;
   color: #646472;
@@ -176,7 +177,6 @@ Buttons
   cursor: pointer;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
-  font-size: 13px;
   text-transform: uppercase;
 }
 
@@ -209,7 +209,8 @@ Buttons
   min-width: -webkit-max-content;
   min-width: -moz-max-content;
   min-width: max-content;
-  font-size: 14px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 13px;
   font-weight: 700;
   text-align: center;
   color: #FFFFFF;
@@ -325,6 +326,7 @@ Other components.
 
 .scrollable-container {
   position: relative;
+  overflow: hidden;
 }
 
 .scrollable-container .scrollable-x, .scrollable-container .scrollable-y {
@@ -333,14 +335,16 @@ Other components.
   right: 0;
   top: 0;
   bottom: 0;
-  padding: 15px;
 }
 
 .scrollable-container .scrollable-x {
   overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
 }
 
 .scrollable-container .scrollable-y {
+  overflow-x: hidden;
   overflow-y: scroll;
 }
 
@@ -583,13 +587,13 @@ body {
 }
 
 .dashboard #logout-btn {
-  height: 40px;
-  line-height: 2.0;
+  height: 36px;
+  line-height: 1.7;
 }
 
 .dashboard .profile-photo {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border: 1px solid rgba(238, 238, 238, 0.5);
   border-radius: 25px;
   overflow: hidden;
@@ -605,6 +609,7 @@ body {
 
 .dashboard .workspace .photo-list {
   max-width: 300px;
+  min-width: 300px;
   -webkit-flex-basis: auto;
       -ms-flex-preferred-size: auto;
           flex-basis: auto;
@@ -629,6 +634,7 @@ body {
 
 .photo-list > .header .title {
   padding-left: 30px;
+  white-space: nowrap;
 }
 
 .photo-list .add-photo {
@@ -646,9 +652,8 @@ body {
   position: relative;
 }
 
-.photo-list .content .list {
-  overflow: scroll;
-  padding: 15px;
+.photo-list .content .list .scrollable-y {
+  padding: 0 15px;
 }
 
 .photo-list .content .list-status {
@@ -667,7 +672,7 @@ body {
   background-color: #FFFFFF;
   overflow: hidden;
   border-radius: 5px;
-  margin-bottom: 15px;
+  margin: 15px 0;
   padding: 0;
   -webkit-transition: box-shadow 1s;
   transition: box-shadow 1s;
@@ -776,6 +781,7 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
   margin-right: 10px;
+  white-space: nowrap;
 }
 
 .photo-card .uploaded .details .date {
@@ -811,4 +817,88 @@ body {
 
 .editor.active {
   background: #FFFFFF;
+}
+
+.editor > .header {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 30px;
+}
+
+.editor .title {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.editor .options .btn-action {
+  padding: 5px 10px;
+  margin: 0 2px;
+}
+
+.editor > .effects-section {
+  position: relative;
+  min-height: 190px;
+  width: 100%;
+}
+
+.editor > .effects-section .list {
+  list-style: none outside none;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.editor > .effects-section .list li {
+  display: inline-block;
+}
+
+.editor > .effects-section .list .scrollable-x {
+  padding: 50px 0 15px;
+}
+
+.editor > .effects-section .directive {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+}
+
+.effect-card {
+  position: relative;
+  background-color: #FFFFFF;
+  overflow: hidden;
+  border-radius: 5px;
+  margin: 0 15px;
+  padding: 1px;
+  cursor: pointer;
+  -webkit-transition: box-shadow 1s;
+  transition: box-shadow 1s;
+}
+
+.effect-card:hover {
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15);
+}
+
+.effect-card .image-wrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: #EEEEEE;
+}
+
+.effect-card .details {
+  height: 40px;
+  padding: 10px;
+}
+
+.effect-card .details .name {
+  font-weight: 700;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-align: center;
 }

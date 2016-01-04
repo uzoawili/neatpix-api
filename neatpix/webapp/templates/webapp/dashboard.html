@@ -23,7 +23,7 @@
         
         <div class="header flex row-layout vertical align-center">
           <div class="title fill flex row-layout align-middle-left">
-            <h3 class="section-label">My Photos</h3 class=".section-label">
+            <h3 class="section-label">My Photos</h3>
           </div>
           <div class="divider-v divider-shaded"></div>
           <button class="btn-action add-photo" title="Upload a Photo"><i class="fa fa-plus fa-lg"></i></button>
@@ -45,7 +45,52 @@
       </div>
 
       <div class="divider-v"></div>
-      <div class="editor fill"></div>
+
+      <div class="editor active fill flex column-layout">
+        
+        <div class="header flex row-layout align-middle-right">
+          <div class="title">
+            <span class="caption section-label">CHILOLO</span><span class="effect subtle"> : 1960ish</span>
+          </div>
+          <div class="options fill flex row-layout align-middle-right">
+            <button class="btn-action"><i class="fa fa-sign-in fa-fw"></i>Save Changes</button>
+            <button class="btn-action"><i class="fa fa-repeat fa-fw"></i>Reset</button>
+            <button class="btn-action"><i class="fa fa-times fa-fw"></i>Cancel</button>
+          </div>
+        </div>
+
+        <div class="divider divider-shaded"></div>
+
+        <div class="stage fill imgLiquidFill imgFitted">
+          <img src="/media/photos/AwiliUzo/eg5057qxr4jy.png">
+        </div>
+
+        <div class="divider divider-shaded"></div>
+
+        <div class="effects-section">
+          <ul class="list scrollable-container">
+            <div class="scrollable-x">
+              <!-- efffect-list items go here -->
+              {% include "webapp/snippet_effect_card.html" %}
+              {% include "webapp/snippet_effect_card.html" %}
+              {% include "webapp/snippet_effect_card.html" %}
+              {% include "webapp/snippet_effect_card.html" %}
+              {% include "webapp/snippet_effect_card.html" %}
+              {% include "webapp/snippet_effect_card.html" %}
+              {% include "webapp/snippet_effect_card.html" %}
+              {% include "webapp/snippet_effect_card.html" %}
+              {% include "webapp/snippet_effect_card.html" %}
+              {% include "webapp/snippet_effect_card.html" %}
+              {% include "webapp/snippet_effect_card.html" %}
+              {% include "webapp/snippet_effect_card.html" %}
+            </div>
+          </ul>
+          <div class="directive flex row-layout align-middle-center">
+            <span>Select a filter or effect to apply:</span>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 {% endblock main %}
