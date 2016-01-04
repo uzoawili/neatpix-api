@@ -224,7 +224,6 @@ var photoList = {
   add: function(photoCard) {
     this.items.push(photoCard);
     this.list.prepend(photoCard.baseElement);
-    photoCard.photoList = this;
     photoCard.setEvents();
   },
 
@@ -333,6 +332,7 @@ var PhotoCard = function(config){
       // register event listeners based on this.currentState.
       if(this.currentState == this.states.UPLOAD){
           this.browseBtn.click(this.onUploadBrowse);
+          this.cancelBtn.click(this.onCancel);
       }else if(this.currentState == this.states.UPLOADING){
           
 
@@ -345,6 +345,7 @@ var PhotoCard = function(config){
       // clear event listeners.
       this.browseBtn.off('click');
       this.applyEffectsBtn.off('click');
+      this.cancelBtn.off('click');
     },
 
     onUploadBrowse: function(e) {
@@ -434,7 +435,7 @@ var PhotoCard = function(config){
       // build the request url:
       url = photoCard.baseUpdateDeleteURL + photoData.public_id + '/';
       // send ajax login request:
-      $.ajax({
+      photoCard.jqXHR = $.ajax({
         url: url,
         type: 'POST',
         data: photoData,
@@ -467,6 +468,21 @@ var PhotoCard = function(config){
       // inform the editor:
       if (editor.currentPhotoCard == photoCard)
         editor.onSaveFailed();
+    },
+
+    onCancel: function() {
+      console.log('cancelBtn clicked');
+      // stop any ongoing ajax requests:
+      if(photoCard.jqXHR) photoCard.jqXHR.abort();
+      // clear any registered event handlers:
+      photoCard.clearEvents();
+      // remove this card from the photoList:
+      photoCard.baseElement.remove();
+      var photoCardIndex = photoList.items.indexOf(photoCard);
+      if(photoCardIndex > -1) photoList.items.splice(photoCardIndex, 1);
+      if(photoList.currentUploadCard == photoCard)
+        photoList.currentUploadCard = null;
+      photoList.showList();
     }
 
   }
