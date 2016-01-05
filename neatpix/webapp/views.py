@@ -190,6 +190,11 @@ class PhotoServiceView(View):
         response = HttpResponse(content_type=self.content_type)
         image.save(response, self.output_format)
 
+        # trigger download if specified:
+        is_download = request.GET.get('download')
+        if is_download == 'true':
+            response['Content-Disposition'] = 'attachment; filename="{}.jpg"'\
+                                              .format(photo.caption)
         return response
 
 

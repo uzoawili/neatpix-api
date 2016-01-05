@@ -80,6 +80,14 @@ var facebook = {
     );
   },
 
+  share: function(url, callback) {
+    console.log(url);
+    FB.ui({
+      method: 'share',
+      href: url,
+    }, callback);
+  },
+
   // function that logs the user in on the server
   // using their facebook details.
   authLogin: function(response) {
@@ -319,8 +327,11 @@ var PhotoCard = function(config){
       }
     },
 
-    buildPhotoURL: function(photoData) {
-      var photoURL = this.baseImageURL + photoData.username + '/';
+    buildPhotoURL: function(photoData, useHost) {
+      var photoURL = '';
+      if(useHost)
+        photoURL += 'http://' + location.host;
+      photoURL += this.baseImageURL + photoData.username + '/';
       if(photoData.effects)
         photoURL += photoData.effects + '/';
       photoURL += photoData.filename;
@@ -338,6 +349,8 @@ var PhotoCard = function(config){
 
       }else if(this.currentState == this.states.UPLOADED){
           this.applyEffectsBtn.click(this.openInEditor);
+          this.sharePhotoBtn.click(this.shareOnFacebook);
+          this.downloadPhotoBtn.click(this.downloadPhoto);
       }
     },
 
@@ -346,6 +359,8 @@ var PhotoCard = function(config){
       this.browseBtn.off('click');
       this.applyEffectsBtn.off('click');
       this.cancelBtn.off('click');
+      this.sharePhotoBtn.off('click');
+      this.downloadPhotoBtn.off('click');
     },
 
     onUploadBrowse: function(e) {
@@ -483,6 +498,26 @@ var PhotoCard = function(config){
       if(photoList.currentUploadCard == photoCard)
         photoList.currentUploadCard = null;
       photoList.showList();
+    },
+
+    shareOnFacebook: function() {
+      facebook.share(
+        photoCard.buildPhotoURL(photoCard.photoData, true),
+        photoCard.onFBShareResponse
+      );
+    },
+
+    onFBShareResponse: function(response){
+
+    },
+
+    downloadPhoto: function(){
+      // build the photo url and add the download flag
+      // as a query string param:
+      url =  photoCard.buildPhotoURL(photoCard.photoData, true),
+      url += '?download=true';
+      // redirect to download:
+      location.href = url;
     }
 
   }
