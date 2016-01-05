@@ -287,7 +287,17 @@ var PhotoCard = function(config){
       settings.downloadPhotoBtn = settings.uploadedDiv.find('.download-photo');
       settings.deletePhotoBtn = settings.uploadedDiv.find('.delete-photo');
 
-      settings.csrfForm = settings.uploadedDiv.find('.csrf-form');
+      settings.deleteOverlay = settings.baseElement.find('.delete-overlay');
+      settings.deleteDirective = settings.deleteOverlay.find('.directive');
+      settings.confirmDeleteBtn = settings.deleteOverlay.find('.confirm-delete-photo');
+
+      settings.captionOverlay = settings.baseElement.find('.caption-overlay');
+      settings.captionDirective = settings.captionOverlay.find('.directive');
+      settings.captionInput = settings.captionOverlay.find('.caption-input');
+      settings.saveCaptionBtn = settings.captionOverlay.find('.save-caption');
+
+      settings.csrfForm = settings.baseElement.find('.csrf-form');
+      settings.overlays = settings.baseElement.find('.overlay');
 
       // customize settings with config if provided:
       $.extend( settings, config );
@@ -298,6 +308,8 @@ var PhotoCard = function(config){
     setState: function(state, data){
       // set the currentState for this photoCard:
       this.currentState = state;
+      // hide any overlays:
+      this.overlays.hide();
       // run any state-specific initializations:
       if(this.currentState == this.states.UPLOAD){
           this.uploadDiv.show();
@@ -345,12 +357,16 @@ var PhotoCard = function(config){
           this.browseBtn.click(this.onUploadBrowse);
           this.cancelBtn.click(this.onCancel);
       }else if(this.currentState == this.states.UPLOADING){
-          
-
+          // no events yet :(
       }else if(this.currentState == this.states.UPLOADED){
           this.applyEffectsBtn.click(this.openInEditor);
+          this.editCaptionBtn.click(this.openCaptionOverlay);
           this.sharePhotoBtn.click(this.shareOnFacebook);
           this.downloadPhotoBtn.click(this.downloadPhoto);
+          this.deletePhotoBtn.click(this.openDeleteOverlay);
+          this.confirmDeleteBtn.click(this.delete);
+          this.saveCaptionBtn.click(this.saveCaption);
+          this.cancelBtn.click(this.onCancel);
       }
     },
 
@@ -358,9 +374,11 @@ var PhotoCard = function(config){
       // clear event listeners.
       this.browseBtn.off('click');
       this.applyEffectsBtn.off('click');
+      this.editCaptionBtn.off('click');
       this.cancelBtn.off('click');
       this.sharePhotoBtn.off('click');
       this.downloadPhotoBtn.off('click');
+      this.deletePhotoBtn.off('click');
     },
 
     onUploadBrowse: function(e) {
@@ -472,6 +490,7 @@ var PhotoCard = function(config){
         // inform the editor:
         if (editor.currentPhotoCard == photoCard)
           editor.onSaveSuccess();
+
       } else {
         onSaveFailed();
       }
@@ -483,21 +502,82 @@ var PhotoCard = function(config){
       // inform the editor:
       if (editor.currentPhotoCard == photoCard)
         editor.onSaveFailed();
+      // inform the editor:
+      if (editor.currentOverlay == photoCard.captionOverlay)
+        photoCard.captionDirective.html(
+          '<i class="fa fa-frown-o fa-fw"></i> Error, the caption could not be saved!'
+        );
+    },
+
+    delete: function(){
+      // show preloader:
+      photoCard.deleteDirective.html(
+        '<i class="fa fa-spinner fa-fw fa-spin"></i> Deleting...'
+      );
+      // build the request url:
+      url = photoCard.baseUpdateDeleteURL + photoCard.photoData.public_id + '/';
+      // send ajax login request:
+      photoCard.jqXHR = $.ajax({
+        url: url,
+        type: 'DELETE',
+        dataType: 'json',
+        headers: {
+          'X-CSRFToken': photoCard.csrfForm.find('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: photoCard.onDeleteResponse,
+        error: photoCard.onDeleteFailed
+      });
+    },
+
+    onDeleteResponse: function(response) {
+      if (response.status == 'success'){
+        // close the editor if necessary:
+        if (editor.currentPhotoCard == photoCard)
+          editor.closePhoto();
+        // clear any registered event handlers:
+        photoCard.clearEvents();
+        // remove this card from the photoList:
+        photoCard.baseElement.remove();
+        var photoCardIndex = photoList.items.indexOf(photoCard);
+        if(photoCardIndex > -1) photoList.items.splice(photoCardIndex, 1);
+        if(photoList.currentUploadCard == photoCard)
+          photoList.currentUploadCard = null;
+        photoList.showList();
+        // show success toast:
+
+      } else {
+        onDeleteFailed();
+      }
+    },
+
+    onDeleteFailed: function() {
+      // show failure toast:
+
+      // inform the editor:
+      if (editor.currentOverlay == photoCard.deleteOverlay)
+        photoCard.deleteDirective.html(
+          '<i class="fa fa-frown-o fa-fw"></i> Sorry, photo deletion failed!'
+        );
     },
 
     onCancel: function() {
-      console.log('cancelBtn clicked');
-      // stop any ongoing ajax requests:
-      if(photoCard.jqXHR) photoCard.jqXHR.abort();
-      // clear any registered event handlers:
-      photoCard.clearEvents();
-      // remove this card from the photoList:
-      photoCard.baseElement.remove();
-      var photoCardIndex = photoList.items.indexOf(photoCard);
-      if(photoCardIndex > -1) photoList.items.splice(photoCardIndex, 1);
-      if(photoList.currentUploadCard == photoCard)
-        photoList.currentUploadCard = null;
-      photoList.showList();
+      console.log(photoCard.currentState);
+      if (photoCard.currentState == photoCard.states.UPLOADED){
+        photoCard.closeOverlay();
+      } else {
+        // stop any ongoing ajax requests:
+        if(photoCard.jqXHR) photoCard.jqXHR.abort();
+        // clear any registered event handlers:
+        photoCard.clearEvents();
+        // remove this card from the photoList:
+        photoCard.baseElement.remove();
+        var photoCardIndex = photoList.items.indexOf(photoCard);
+        if(photoCardIndex > -1) photoList.items.splice(photoCardIndex, 1);
+        if(photoList.currentUploadCard == photoCard)
+          photoList.currentUploadCard = null;
+        photoList.showList();
+      }
+      
     },
 
     shareOnFacebook: function() {
@@ -508,7 +588,7 @@ var PhotoCard = function(config){
     },
 
     onFBShareResponse: function(response){
-
+      console.log(response);
     },
 
     downloadPhoto: function(){
@@ -518,6 +598,44 @@ var PhotoCard = function(config){
       url += '?download=true';
       // redirect to download:
       location.href = url;
+    },
+
+    openCaptionOverlay: function(){
+      // initialize the overlay:
+      photoCard.captionDirective.html('<span>Caption this Photo:</span>');
+      photoCard.captionInput.val(photoCard.photoData.caption);
+      // show overlay:
+      photoCard.openOverlay(photoCard.captionOverlay);
+    },
+
+    openDeleteOverlay: function(){
+      // initialize the overlay:
+      photoCard.deleteDirective.html('Are you sure?<br>Click the button below to confirm.');
+      // show overlay:
+      photoCard.openOverlay(photoCard.deleteOverlay);
+    },
+
+    openOverlay: function(overlay){
+      // show the overlay:
+      photoCard.currentOverlay = overlay;
+      photoCard.currentOverlay.fadeIn();
+      photoCard.cancelBtn.show();
+    },
+
+    closeOverlay: function(){
+      // initialize the overlay:
+      photoCard.cancelBtn.hide();
+      photoCard.currentOverlay.fadeOut();
+      photoCard.currentOverlay = null;
+    },
+
+    saveCaption: function(){
+      photoCard.captionDirective.html(
+        '<i class="fa fa-spinner fa-fw fa-spin"></i> Saving...'
+      );
+      photoData = $.extend({}, photoCard.photoData)
+      photoData.caption = photoCard.captionInput.val();
+      photoCard.save(photoData); 
     }
 
   }

@@ -29,6 +29,7 @@
   </div>
 
   <div class="uploaded flex column-layout">
+
     <div class="image-wrapper imgLiquidFill imgFilled">
       <a class="apply-effects" href=""><img src=""></a>
     </div>
@@ -44,8 +45,30 @@
       <button class="btn-action subtle download-photo" title="Download"><i class="fa fa-download fa-lg"></i></button>
       <button class="btn-action subtle delete-photo" title="Delete"><i class="fa fa-trash fa-lg"></i></button>
     </div>
-    <form class="csrf-form" method="" action="">{% csrf_token %}</form>
+
   </div>
+
+  <div class="delete-overlay overlay flex column-layout align-middle-center">
+    <div class="icon">
+      <i class="fa fa-trash fa-3x"></i>
+    </div>
+    <p class="directive">Are you sure?<br>Click the button below to confirm.</p>
+    <div class="call-to-action">
+      <button class="btn-action confirm-delete-photo"><i class="fa fa-trash fa-fw"></i> Delete Photo</button>
+    </div>
+  </div>
+
+  <div class="caption-overlay overlay flex column-layout align-middle-center">
+    <p class="directive">
+      <span>Caption this Photo:</span>
+    </p>
+    <div><input type="text" name="caption" class="caption-input sleek-textbox"></div>
+    <div class="call-to-action">
+      <button class="btn-action save-caption"><i class="fa fa-sign-in fa-fw"></i> Save Caption</button>
+    </div>
+  </div>
+
+  <form class="csrf-form" method="" action="">{% csrf_token %}</form>
   
   <button class="btn-icon cancel-btn subtle" title="Cancel">
     <i class="fa fa-times fa-lg"></i>

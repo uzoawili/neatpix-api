@@ -71,6 +71,28 @@ p {
   z-index: 10000;
 }
 
+input.sleek-textbox {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: 1px solid;
+  border-radius: 0;
+  padding: 5px 15px;
+  height: 36px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #646472;
+  background-color: #FFFFFF;
+  border-color: rgba(204, 204, 204, 0.5);
+  -webkit-transition: all 0.15s;
+  transition: all 0.15s;
+}
+
+input.sleek-textbox:focus {
+  border-color: #0085B3;
+}
+
 body {
   font-family: "Open Sans", sans-serif;
 }
@@ -395,7 +417,7 @@ body {
   left: 0;
   z-index: 4001;
   overflow: scroll;
-  background-color: rgba(238, 238, 238, 0.9);
+  background-color: rgba(255, 255, 255, 0.95);
   opacity: 0;
   visibility: hidden;
   -webkit-transition: opacity 0.5s, visibility 0s 0.5s;
@@ -806,6 +828,36 @@ body {
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.photo-card .overlay {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.95);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 20px;
+}
+
+.photo-card .overlay > * {
+  margin: 10px 0;
+}
+
+.photo-card .overlay p {
+  text-align: center;
+}
+
+.photo-card .overlay .call-to-action {
+  margin: 0;
+}
+
+.photo-card .overlay .title {
+  font-weight: 700;
+}
+
+.photo-card .overlay input {
+  width: 100%;
 }
 
 .editor {
