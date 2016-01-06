@@ -269,7 +269,7 @@ var PhotoCard = function(config){
       settings.fileInput = settings.uploadDiv.find('.upload-form input');
       settings.fileInfo = settings.uploadDiv.find('.file-info');
       settings.uploadBtn = settings.uploadDiv.find('.upload-photo');
-      
+
       settings.uploadingDiv = settings.baseElement.find('.uploading');
       settings.filename = settings.uploadingDiv.find('.filename');
       settings.statusMsg = settings.uploadingDiv.find('.status .message');
@@ -446,8 +446,7 @@ var PhotoCard = function(config){
       // init the fileupload plugin on the uploadForm
       this.uploadForm.fileupload({
         dataType: 'json',
-        dropZone: this.uploadDiv,
-        acceptFileTypes: /(\.|\/)(gif|bmp|jpe?g|png)$/i,
+        dropZone: settings.uploadDiv,
         add: this.onUploadAdd,
         progress: this.onUploadProgress,
         done: this.onUploadSuccess,

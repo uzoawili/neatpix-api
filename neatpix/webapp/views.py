@@ -186,11 +186,12 @@ class PhotoServiceView(View):
         if effects:
             effects = effects.split(',')
             for effect_name in effects:
-                # get the effect function
-                effect = photo_effects.get(effect_name)
-                if effect:
-                    # apply the effect to the image:
-                    image = effect(image)
+                # get the matching effects:
+                # import pdb; pdb.set_trace()
+                matching_effects = [effect[1] for effect in photo_effects if effect[0] == effect_name]
+                # apply the effect to the image:
+                if len(matching_effects):
+                    image = matching_effects[0](image)
 
         # save the image to a FileResponse instance:
         response = HttpResponse(content_type=self.content_type)

@@ -340,7 +340,7 @@ Other components.
 ========================================================================== */
 .card {
   padding: 1px;
-  border: 1px solid rgba(204, 204, 204, 0);
+  border: 1px solid rgba(0, 88, 121, 0.3);
   border-radius: 6px;
   background: #FFFFFF;
   box-shadow: box-shadow(card);
@@ -691,8 +691,9 @@ body {
 .photo-card {
   width: 100%;
   position: relative;
-  background-color: #FFFFFF;
   overflow: hidden;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   margin: 15px 0;
   padding: 0;
@@ -701,6 +702,7 @@ body {
 }
 
 .photo-card:hover {
+  border: 1px solid rgba(0, 88, 121, 0.3);
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15);
 }
 
@@ -926,8 +928,9 @@ body {
 .effect-card {
   position: relative;
   background-color: #FFFFFF;
-  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 5px;
+  overflow: hidden;
   margin: 0 15px;
   padding: 1px;
   cursor: pointer;
@@ -936,6 +939,7 @@ body {
 }
 
 .effect-card:hover {
+  border-color: rgba(0, 88, 121, 0.3);
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15);
 }
 
@@ -949,7 +953,7 @@ body {
 
 .effect-card .details {
   height: 40px;
-  padding: 10px;
+  padding: 0;
 }
 
 .effect-card .details .name {

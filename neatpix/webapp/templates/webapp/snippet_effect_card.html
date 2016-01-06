@@ -1,12 +1,12 @@
 {% load static %}
 
-<li class="effect-card" data-effect-name="{{ effect_name }}">
+<li class="effect-card" data-effect-name="{{ effect.0 }}">
   <div class="flex column-layout">
     <div class="image-wrapper imgLiquidFill imgFilled">
       <img src="">
     </div>
     <div class="details flex row-layout align-middle-center">
-      <div class="name">{{ effect_name|title }}</div>
+      <div class="name">{{ effect.0|title }}</div>
     </div>
   </div>
 </li>

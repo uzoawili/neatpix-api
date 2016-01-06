@@ -1,3 +1,4 @@
+from django.http.request import QueryDict
 from PIL import ImageFilter
 from PIL import ImageEnhance
 from PIL import ImageOps
@@ -55,15 +56,25 @@ def brighten(image):
     return enhancer.enhance(1.5)
 
 
-photo_effects = {
-    'flip': flip,
-    'mirror': mirror,
-    'grayscale': grayscale,
-    'brighten': brighten,
-    'darken': darken,
-    'saturate': saturate,
-    'blur': blur,
-    'detail': detail,
-    'smooth': smooth,
-    'contrast': contrast,
-}
+def charcoal(image):
+    image = grayscale(image)
+    image = contrast(image)
+    image = brighten(image)
+    image = detail(image)
+    return image
+
+
+
+photo_effects = [
+    ('saturate', saturate),
+    ('grayscale', grayscale),
+    ('brighten', brighten),
+    ('darken', darken),
+    ('blur', blur),
+    ('detail', detail),
+    ('smooth', smooth),
+    ('contrast', contrast),
+    ('charcoal', charcoal),
+    ('flip', flip),
+    ('mirror', mirror),
+]
