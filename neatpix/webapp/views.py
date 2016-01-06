@@ -14,7 +14,7 @@ from PIL import Image
 from models import Photo
 from forms import FacebookAuthForm, PhotoForm
 from decorators import json_response
-from effects import photo_effects
+from effects import photo_effects, thumbnail
 
 
 class LoginRequiredMixin(object):
@@ -168,14 +168,20 @@ class PhotoServiceView(View):
         effects to apply. Returns the image (FileResponse)
         with the applied effects.
         """
-        # get the captured image specs from the url:
+        # use the captured image specs from the url
+        # to get the associated photo instance:
         filename = kwargs.get('filename')
         effects = kwargs.get('effects')
         public_id, ext = os.path.splitext(filename)
-        # get the associated photo instance:
         photo = get_object_or_404(Photo, public_id=public_id)
+
         # get a pillow image instance for the photo:
         image = Image.open(photo.image.path)
+
+        # convert image to thumbnail size if specified:
+        if request.GET.get('thumbnail') == 'true':
+            image = thumbnail(image)
+
         # apply any specified effects:
         if effects:
             effects = effects.split(',')
@@ -191,8 +197,7 @@ class PhotoServiceView(View):
         image.save(response, self.output_format)
 
         # trigger download if specified:
-        is_download = request.GET.get('download')
-        if is_download == 'true':
+        if request.GET.get('download') == 'true':
             response['Content-Disposition'] = 'attachment; filename="{}.jpg"'\
                                               .format(photo.caption)
         return response

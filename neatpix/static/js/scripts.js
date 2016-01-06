@@ -701,7 +701,7 @@ var editor = {
       effectImage = $(this).find('img');
       effectPhotoData = $.extend( {}, editor.photoData );
       effectPhotoData.effects = $(this).data('effectName');
-      effectImage.attr('src', editor.buildPhotoURL(effectPhotoData));
+      effectImage.attr('src', editor.buildPhotoURL(effectPhotoData)+'?thumbnail=true');
       effectImage.closest('.image-wrapper').imgLiquid(imageLiquid.config.filled);
     });
     // set the initial state of the cumulative checkbox:
