@@ -653,10 +653,11 @@ var editor = {
       baseElement: $('.editor'),
       caption: $('.editor .title .caption'),
       effects: $('.editor .title .effects'),
-      saveButton: $('.options .save-changes'),
-      cumulativeCheckbox: $('.effects-header #cumulative-cbox'),
+      undoButton: $('.options .undo'),
       resetButton: $('.options .reset'),
+      saveButton: $('.options .save-changes'),
       cancelButton: $('.options .cancel'),
+      cumulativeCheckbox: $('.effects-header #cumulative-cbox'),
       stageImage: $('.stage img'),
       effectItems: $('.effect-card'),
 
@@ -742,17 +743,26 @@ var editor = {
   },
 
   applyEffect: function() {
-    // apply the effect to th stage image:
-    effectPhotoData = $.extend( {}, editor.photoData );
-    // append the new effect if cumulative is set:
+    // append the new effect.
+    // apply cumulatively if set:
     if(editor.useCumulativeEffects){
-      if(effectPhotoData.effects) effectPhotoData.effects += ",";
-      effectPhotoData.effects += $(this).data('effectName');
+      if(editor.photoData.effects) editor.photoData.effects += ",";
+      editor.photoData.effects += $(this).data('effectName');
     } else {
-      effectPhotoData.effects = $(this).data('effectName');
+      editor.photoData.effects = $(this).data('effectName');
     }
-    // update the editor.photoData
-    editor.photoData = effectPhotoData;
+    // update the stage image with effect:
+    editor.setStageImage(editor.photoData);
+    // update the caption/effect text:
+    editor.setEffectsText(editor.photoData.effects);
+  },
+
+  undoEffect: function() {
+    // remove the last effect from the photoData effects list:
+    effects = editor.photoData.effects;
+    effects = effects.split(',')
+    effects.pop();
+    editor.photoData.effects = effects.join();
     // update the stage image with effect:
     editor.setStageImage(editor.photoData);
     // update the caption/effect text:
@@ -804,8 +814,9 @@ var editor = {
 
   setEvents: function() {
     this.clearEvents();
-    this.saveButton.click(this.saveEffects);
+    this.undoButton.click(this.undoEffect);
     this.resetButton.click(this.resetEffects);
+    this.saveButton.click(this.saveEffects);
     this.cancelButton.click(this.closePhoto);
     this.cumulativeCheckbox.change(this.setCumulative);
     // register event listeners on effect items:
@@ -815,8 +826,9 @@ var editor = {
   },
 
   clearEvents: function() {
-    this.saveButton.off('click');
+    this.undoButton.off('click');
     this.resetButton.off('click');
+    this.saveButton.off('click');
     this.cancelButton.off('click');
     this.cumulativeCheckbox.off('change');
     // clear event listeners on effect items:
