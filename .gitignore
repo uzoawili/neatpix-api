@@ -74,6 +74,9 @@ neatpix/static/scss/
 # staticfiles
 neatpix/staticfiles/
 
+# user uploaded files
+neatpix/media/
+
 # database migrations
 neatpix/*/migrations/*
 

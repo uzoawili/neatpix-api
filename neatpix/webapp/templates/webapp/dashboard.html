@@ -4,8 +4,93 @@
 {% block window_title %}Dashboard{% endblock window_title %}
 
 {% block main %}
-  <main class="dashboard">
-  Hello, logged in as!
+  <div class="dashboard flex column-layout">
+    <div class="header-bar flex row-layout vertical align-center">
+      <div class="brand">
+        <a href=""><img src="{% static 'img/logo-sm-white.png' %}"></a>
+      </div>
+      <div class="header-options fill flex row-layout align-middle-right">
+        <span>Logged in as <span class="emphasis">{{ request.user.first_name }} {{ request.user.last_name }}</span></span>
+        <a href="https://facebook.com" target="_blank" class="profile-photo imgLiquidFill imgFilled">
+          <img src="{{ request.user.social_profile.photo }}">
+        </a>
+        <a href="{% url 'webapp:logout' %}" class="btn-action-alt" id="logout-btn">Log Out</a>
+      </div>
+    </div>
+    <div class="workspace fill flex row-layout"> 
+      
+      <div class="photo-list fill flex column-layout">
+        
+        <div class="header flex row-layout vertical align-center">
+          <div class="title fill flex row-layout align-middle-left">
+            <h3 class="section-label">My Photos</h3>
+          </div>
+          <div class="divider-v divider-shaded"></div>
+          <button class="btn-action add-photo" title="Upload a Photo"><i class="fa fa-plus fa-lg"></i></button>
+        </div>
+        
+        <div class="divider divider-shaded"></div>
+        
+        <div class="content fill flex column-layout">
+          <ul class="list fill scrollable-container">
+            <div class="scrollable-y">
+              <!-- photo-list items go here -->
+            </div>
+          </ul>
+          <div class="list-status">
+            <!-- photo-list statuses go here -->
+          </div>
+        </div>
 
-  </main>
+      </div>
+
+      <div class="divider-v"></div>
+
+      <div class="editor fill flex column-layout">
+        
+        <div class="header flex row-layout align-middle-right">
+          <div class="title">
+            <span class="caption section-label"></span><span class="effects subtle"></span>
+          </div>
+          <div class="options fill flex row-layout align-middle-right">
+            <button class="btn-action undo" title="Undo last effect"><i class="fa fa-undo fa-fw"></i>Undo</button>
+            <button class="btn-action reset" title="Reset to original image"><i class="fa fa-undo fa-flip-vertical fa-fw"></i>Reset</button>
+            <button class="btn-action save-changes" title="Save changes to cloud"><i class="fa fa-check fa-fw"></i>Save Changes</button>
+            <button class="btn-action cancel" title="Close this editor"><i class="fa fa-times fa-fw"></i>Cancel</button>
+          </div>
+        </div>
+
+        <div class="divider divider-shaded"></div>
+
+        <div class="stage fill image-wrapper imgLiquidFill imgFitted">
+          <img src="">
+        </div>
+
+        <div class="divider divider-shaded"></div>
+
+        <div class="effects-section">
+          <ul class="list scrollable-container">
+            <div class="scrollable-x">
+              <!-- efffect-list items go here -->
+              {% for effect in photo_effects %}
+                {% include "webapp/snippet_effect_card.html" %}
+              {% endfor %}
+            </div>
+          </ul>
+          <div class="effects-header flex row-layout align-middle-center">
+            <span class="directive fill">Select effect(s) to apply by clicking on them:</span>
+            <div class="cumulative-effects">
+              <input type="checkbox" id="cumulative-cbox" value="useCumulativeEffects">
+              <label for="cumulative-cbox">Use cumulative effects</label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
 {% endblock main %}
+
+{% block generic_snippets %}
+  {% include "webapp/snippet_photo_card.html" %}
+{% endblock generic_snippets %}

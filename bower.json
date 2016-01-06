@@ -21,6 +21,7 @@
     "jquery": "~2.1.4",
     "bootstrap": "~3.3.5",
     "flxgrid": "~1.0.0",
-    "font-awesome": "fontawesome#~4.4.0"
+    "font-awesome": "fontawesome#~4.4.0",
+    "jquery-file-upload": "~9.11.0"
   }
 }

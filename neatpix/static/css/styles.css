@@ -12,7 +12,7 @@ body {
 }
 
 h1, h2, h3, h4 {
-  margin: 0 0 10 0;
+  margin: 0 0 10;
 }
 
 ul, ol {
@@ -52,6 +52,10 @@ p {
   vertical-align: middle;
 }
 
+.divider-shaded {
+  background-color: rgba(204, 204, 204, 0.5);
+}
+
 .badge {
   padding: 5px 8px;
   color: #FFFFFF;
@@ -65,6 +69,28 @@ p {
 .dropdown .dropdown-menu {
   position: absolute;
   z-index: 10000;
+}
+
+input.sleek-textbox {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: 1px solid;
+  border-radius: 0;
+  padding: 5px 15px;
+  height: 36px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #646472;
+  background-color: #FFFFFF;
+  border-color: rgba(204, 204, 204, 0.5);
+  -webkit-transition: all 0.15s;
+  transition: all 0.15s;
+}
+
+input.sleek-textbox:focus {
+  border-color: #0085B3;
 }
 
 body {
@@ -90,7 +116,7 @@ h3 {
 }
 
 body {
-  color: #EEEEEE;
+  color: #646472;
   font-size: 13px;
   font-weight: 500;
 }
@@ -156,14 +182,15 @@ Buttons
           appearance: none;
   overflow: hidden;
   border: 1px solid;
-  height: 40px;
+  height: 36px;
   display: inline-block;
   border-radius: 5px;
   padding: 5px 20px;
   min-width: -webkit-max-content;
   min-width: -moz-max-content;
   min-width: max-content;
-  font-size: 14px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 13px;
   font-weight: 700;
   text-align: center;
   color: #646472;
@@ -172,7 +199,6 @@ Buttons
   cursor: pointer;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
-  font-size: 13px;
   text-transform: uppercase;
 }
 
@@ -205,7 +231,8 @@ Buttons
   min-width: -webkit-max-content;
   min-width: -moz-max-content;
   min-width: max-content;
-  font-size: 14px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 13px;
   font-weight: 700;
   text-align: center;
   color: #FFFFFF;
@@ -219,13 +246,13 @@ Buttons
 .btn-action-alt:hover {
   color: #FFFFFF;
   background-color: #005879;
-  border-color: #EEEEEE;
+  border-color: rgba(238, 238, 238, 0.5);
 }
 
 .btn-action-alt:active, .btn-action-alt:focus {
   color: #F7F7F7;
   background-color: #0085B3;
-  border-color: #EEEEEE;
+  border-color: rgba(238, 238, 238, 0.5);
 }
 
 .btn-action-alt i {
@@ -245,20 +272,21 @@ Buttons
   color: #646472;
   background-color: transparent;
   border-color: transparent;
+  cursor: pointer;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
   border-radius: 5px;
 }
 
 .btn-icon:hover {
-  color: #FFFFFF;
-  background-color: #0085B3;
+  color: #0085B3;
+  background-color: transparent;
   border-color: transparent;
 }
 
 .btn-icon:active {
-  color: #F7F7F7;
-  background-color: #005879;
+  color: #005879;
+  background-color: transparent;
   border-color: transparent;
 }
 
@@ -312,10 +340,58 @@ Other components.
 ========================================================================== */
 .card {
   padding: 1px;
-  border: 1px solid rgba(238, 238, 238, 0);
+  border: 1px solid rgba(0, 88, 121, 0.3);
   border-radius: 6px;
   background: #FFFFFF;
   box-shadow: box-shadow(card);
+}
+
+.scrollable-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.scrollable-container .scrollable-x, .scrollable-container .scrollable-y {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.scrollable-container .scrollable-x {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+.scrollable-container .scrollable-y {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.scrollable-container .scrollable-x:hover, .scrollable-container .scrollable-y:hover {
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15) inset;
+  -webkit-transition: box-shadow .7s 1s;
+  transition: box-shadow .7s 1s;
+}
+
+.emphasis {
+  font-weight: 700;
+}
+
+.accent {
+  color: #0085B3;
+  font-weight: 700;
+}
+
+.subtle {
+  color: #C3C3C8;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.2;
 }
 
 /* ==========================================================================
@@ -330,16 +406,7 @@ html, body, .viewport-container {
 
 body {
   position: relative;
-  min-width: 360px;
-  background-color: #EEEEEE;
-}
-
-.scollable-x {
-  overflow-x: scroll;
-}
-
-.scollable-y {
-  overflow-y: scroll;
+  background-color: #646472;
 }
 
 .modals-wrapper {
@@ -350,7 +417,7 @@ body {
   left: 0;
   z-index: 4001;
   overflow: scroll;
-  background-color: rgba(238, 238, 238, 0.9);
+  background-color: rgba(255, 255, 255, 0.95);
   opacity: 0;
   visibility: hidden;
   -webkit-transition: opacity 0.5s, visibility 0s 0.5s;
@@ -377,6 +444,7 @@ body {
   color: #646472;
   background-color: transparent;
   border-color: transparent;
+  cursor: pointer;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
   border-radius: 5px;
@@ -404,7 +472,6 @@ body {
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
-  font-size: 15px;
 }
 
 .modals-wrapper #modals-close .caption {
@@ -469,6 +536,8 @@ body {
   width: 100%;
   height: 100%;
   position: relative;
+  min-width: 360px;
+  min-height: 300px;
   overflow: scroll;
 }
 
@@ -487,6 +556,7 @@ body {
 
 .index-page .hero {
   position: relative;
+  color: #FFFFFF;
   background-color: rgba(0, 133, 178, 0.9);
 }
 
@@ -507,4 +577,389 @@ body {
   min-height: 60px;
   background-color: #EEEEEE;
   color: #646472;
+}
+
+.dashboard {
+  width: 100%;
+  height: 100%;
+  min-width: 700px;
+  min-height: 400px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard > * {
+  width: 100%;
+}
+
+.dashboard .header-bar {
+  min-height: 50px;
+  overflow: hidden;
+  padding: 0 30px;
+  color: #FFFFFF;
+  background-color: #0085B3;
+}
+
+.dashboard .header-bar .brand {
+  margin-top: 3px;
+}
+
+.dashboard .header-options > * {
+  margin-left: 15px;
+}
+
+.dashboard #logout-btn {
+  height: 36px;
+  line-height: 1.7;
+}
+
+.dashboard .profile-photo {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(238, 238, 238, 0.5);
+  border-radius: 25px;
+  overflow: hidden;
+}
+
+.dashboard .workspace {
+  width: 100%;
+}
+
+.dashboard .workspace > * {
+  min-height: 100%;
+}
+
+.dashboard .workspace .photo-list {
+  max-width: 300px;
+  min-width: 300px;
+  -webkit-flex-basis: auto;
+      -ms-flex-preferred-size: auto;
+          flex-basis: auto;
+}
+
+.dashboard .workspace > .divider-v {
+  background-color: #cccccc;
+}
+
+.photo-list {
+  background-color: #EEEEEE;
+  overflow: hidden;
+}
+
+.photo-list > .header {
+  min-height: 50px;
+}
+
+.photo-list > .header .divider-v {
+  height: 50px;
+}
+
+.photo-list > .header .title {
+  padding-left: 30px;
+  white-space: nowrap;
+}
+
+.photo-list .add-photo {
+  height: 50px;
+  width: 50px;
+  border-radius: 0;
+  padding: 0;
+}
+
+.photo-list .add-photo i {
+  margin: 0;
+}
+
+.photo-list .content {
+  position: relative;
+}
+
+.photo-list .content .list .scrollable-y {
+  padding: 0 15px;
+}
+
+.photo-list .content .list-status {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  padding: 40px 20px 20px;
+  text-align: center;
+}
+
+.photo-card {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  margin: 15px 0;
+  padding: 0;
+  -webkit-transition: box-shadow 1s;
+  transition: box-shadow 1s;
+}
+
+.photo-card:hover {
+  border: 1px solid rgba(0, 88, 121, 0.3);
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15);
+}
+
+.photo-card .upload {
+  width: 100%;
+  padding: 40px 20px 20px;
+}
+
+.photo-card .upload > * {
+  margin: 10px 0;
+}
+
+.photo-card .upload p {
+  text-align: center;
+}
+
+.photo-card .upload .photo-icon {
+  width: 90px;
+  height: 85px;
+}
+
+.photo-card .upload .call-to-action {
+  margin: 0;
+}
+
+.photo-card .upload .upload-form {
+  display: none;
+}
+
+.photo-card .uploading {
+  width: 100%;
+  padding: 10px;
+}
+
+.photo-card .uploading .filename {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.photo-card .uploading .status {
+  margin-top: 10px;
+}
+
+.photo-card .uploading .status * {
+  display: block;
+}
+
+.photo-card .uploading .status .message {
+  font-style: italic;
+  float: left;
+}
+
+.photo-card .uploading .status .value {
+  float: right;
+  text-align: right;
+}
+
+.photo-card .uploading .progress-bar {
+  position: relative;
+  height: 3px;
+  margin-top: 7px;
+}
+
+.photo-card .uploading .progress-bar > * {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.photo-card .uploading .progress-bar .total {
+  background-color: #EEEEEE;
+  width: 100%;
+}
+
+.photo-card .uploading .progress-bar .progress {
+  background-color: #0085B3;
+  width: 0%;
+}
+
+.photo-card .uploaded {
+  width: 100%;
+  padding: 1px;
+}
+
+.photo-card .uploaded .image-wrapper {
+  height: 180px;
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: #EEEEEE;
+}
+
+.photo-card .uploaded .details {
+  height: 50px;
+  padding: 10px;
+}
+
+.photo-card .uploaded .details .caption {
+  font-weight: 700;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.photo-card .uploaded .details .date {
+  text-align: right;
+}
+
+.photo-card .uploaded .actions {
+  height: 50px;
+}
+
+.photo-card .uploaded .actions .btn-action {
+  min-width: 45px;
+  padding: 5px 10px;
+  margin: 0 3px;
+}
+
+.photo-card .uploaded .actions .btn-action i {
+  margin: 0;
+}
+
+.photo-card .cancel-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.photo-card .overlay {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.95);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 20px;
+}
+
+.photo-card .overlay > * {
+  margin: 10px 0;
+}
+
+.photo-card .overlay p {
+  text-align: center;
+}
+
+.photo-card .overlay .call-to-action {
+  margin: 0;
+}
+
+.photo-card .overlay .title {
+  font-weight: 700;
+}
+
+.photo-card .overlay input {
+  width: 100%;
+}
+
+.editor {
+  background: url("../img/logo-xl-grey.png") no-repeat;
+  background-position: center 45%;
+  background-color: #FFFFFF;
+  overflow: hidden;
+}
+
+.editor.active {
+  background: #FFFFFF;
+}
+
+.editor > .header {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 30px;
+}
+
+.editor .title {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.editor .options .btn-action {
+  padding: 5px 10px;
+  margin: 0 2px;
+}
+
+.editor .stage {
+  background-color: #EEEEEE;
+}
+
+.editor > .effects-section {
+  position: relative;
+  min-height: 190px;
+  width: 100%;
+}
+
+.editor > .effects-section .list {
+  list-style: none outside none;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.editor > .effects-section .list li {
+  display: inline-block;
+}
+
+.editor > .effects-section .list .scrollable-x {
+  padding: 50px 15px 15px;
+}
+
+.editor > .effects-section .effects-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  padding: 0 30px;
+}
+
+.effect-card {
+  position: relative;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 0 15px;
+  padding: 1px;
+  cursor: pointer;
+  -webkit-transition: box-shadow 1s;
+  transition: box-shadow 1s;
+}
+
+.effect-card:hover {
+  border-color: rgba(0, 88, 121, 0.3);
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15);
+}
+
+.effect-card .image-wrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: #EEEEEE;
+}
+
+.effect-card .details {
+  height: 40px;
+  padding: 0;
+}
+
+.effect-card .details .name {
+  font-weight: 700;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-align: center;
 }

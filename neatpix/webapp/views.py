@@ -1,14 +1,20 @@
+import os
 import json
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.core.context_processors import csrf
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import View
+from django.http import HttpResponse
 
-from forms import FacebookAuthForm
+from PIL import Image
+
+from models import Photo
+from forms import FacebookAuthForm, PhotoForm
 from decorators import json_response
+from effects import photo_effects, thumbnail
 
 
 class LoginRequiredMixin(object):
@@ -96,6 +102,143 @@ class DashboardView(LoginRequiredMixin, View):
         Renders the dashboard view.
         """
         # show index view:
-        context = {}
+        context = {
+            'photo_effects': photo_effects,
+        }
         context.update(csrf(self.request))
         return render(self.request, 'webapp/dashboard.html', context)
+
+
+class PhotosListView(JsonResponseMixin, LoginRequiredMixin, View):
+    """
+    View to fetch the list of photos.
+    """
+    def get(self, request, *args, **kwargs):
+        """
+        Returns a JSON list of photos uploaded
+        by the current user.
+        """
+        photos = Photo.objects.filter(user=request.user)\
+                              .order_by('date_created')\
+                              .all()
+        photos = [photo.serialize() for photo in photos]
+        return {
+            'status': 'success',
+            'data': photos,
+        }
+
+
+class PhotoUploadView(JsonResponseMixin, LoginRequiredMixin, View):
+    """
+    View to handle photo uploads.
+    """
+    def post(self, request, *args, **kwargs):
+        """
+        Handles the upload of photos and returns
+        a JSON serialization of the uploaded photo.
+        """
+        photoForm = PhotoForm(request.POST, request.FILES)
+        if photoForm.is_valid():
+            # save the photo and image file:
+            photo = photoForm.save(commit=False)
+            # set the default caption and user:
+            photo.caption = photo.image.name
+            photo.user = request.user
+            photo.save()
+            # return the serialized photo:
+            return {
+                'status': 'success',
+                'photoData': photo.serialize(),
+            }
+        # return error response
+        return {'status': 'invalid', }
+
+
+class PhotoServiceView(View):
+    """
+    View to handle serving uploaded photos with
+    effects (optional) applied.
+    """
+    content_type = "image/jpg"
+    output_format = "JPEG"
+
+    def get(self, request, *args, **kwargs):
+        """
+        Accepts a photo's public_id and optionally a list of
+        effects to apply. Returns the image (FileResponse)
+        with the applied effects.
+        """
+        # use the captured image specs from the url
+        # to get the associated photo instance:
+        filename = kwargs.get('filename')
+        effects = kwargs.get('effects')
+        public_id, ext = os.path.splitext(filename)
+        photo = get_object_or_404(Photo, public_id=public_id)
+
+        # get a pillow image instance for the photo:
+        image = Image.open(photo.image.path)
+
+        # convert image to thumbnail size if specified:
+        if request.GET.get('thumbnail') == 'true':
+            image = thumbnail(image)
+
+        # apply any specified effects:
+        if effects:
+            effects = effects.split(',')
+            for effect_name in effects:
+                # get the matching effects:
+                # import pdb; pdb.set_trace()
+                matching_effects = [effect[1] for effect in photo_effects if effect[0] == effect_name]
+                # apply the effect to the image:
+                if len(matching_effects):
+                    image = matching_effects[0](image)
+
+        # save the image to a FileResponse instance:
+        response = HttpResponse(content_type=self.content_type)
+        image.save(response, self.output_format)
+
+        # trigger download if specified:
+        if request.GET.get('download') == 'true':
+            response['Content-Disposition'] = 'attachment; filename="{}.jpg"'\
+                                              .format(photo.caption)
+        return response
+
+
+class PhotoUpdateDeleteView(JsonResponseMixin, LoginRequiredMixin, View):
+    """
+    View to handle changes to photos such as updating the
+    applied effects, the caption or deleting it altogethter.
+    """
+    def post(self, request, *args, **kwargs):
+        """
+        Handles the updating of photos and returns
+        a JSON serialization of the updated photo.
+        Note, this view cannot update the associated
+        image file.
+        """
+        public_id = kwargs.get('public_id')
+        photo = get_object_or_404(Photo, public_id=public_id)
+        photoForm = PhotoForm(request.POST, instance=photo)
+        if photoForm.is_valid():
+            # save the photo:
+            photo = photoForm.save()
+            # return the serialized photo:
+            return {
+                'status': 'success',
+                'photoData': photo.serialize(),
+            }
+        # return error response
+        return {'status': 'invalid', }
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Handles the deleting of photos.
+        Note, the actual deletion of the associated
+        image file is handled in the post_delete
+        function defined in the models module.
+        """
+        public_id = kwargs.get('public_id')
+        photo = get_object_or_404(Photo, public_id=public_id)
+        photo.delete()
+        # return error response
+        return {'status': 'success', }
