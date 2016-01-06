@@ -20,7 +20,7 @@ deployment:
     branch: master
     commands:
       - git fetch origin --unshallow
-      - git push -f git@heroku.com:neatpix.git $CIRCLE_SHA1:master --app neatpix
+      - git push -f git@heroku.com:neatpix.git $CIRCLE_SHA1:master
       - heroku run python neatpix/manage.py collectstatic --noinput --settings=neatpix.settings.staging --app neatpix
       - heroku run python neatpix/manage.py makemigrations --settings=neatpix.settings.staging --app neatpix
       - heroku run python neatpix/manage.py migrate auth --settings=neatpix.settings.staging --app neatpix
