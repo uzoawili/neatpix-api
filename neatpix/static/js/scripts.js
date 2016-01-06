@@ -447,6 +447,7 @@ var PhotoCard = function(config){
       this.uploadForm.fileupload({
         dataType: 'json',
         dropZone: settings.uploadDiv,
+        acceptFileTypes: /(\.|\/)(gif|bmp|jpe?g|png)$/i,
         add: this.onUploadAdd,
         progress: this.onUploadProgress,
         done: this.onUploadSuccess,
