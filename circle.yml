@@ -17,7 +17,7 @@ test:
     - coveralls
 deployment:
   staging:
-    branch: master
+    branch: develop
     commands:
       - git fetch origin --unshallow
       - git push -f git@heroku.com:neatpix.git $CIRCLE_SHA1:master
