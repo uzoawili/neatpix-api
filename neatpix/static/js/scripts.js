@@ -12,7 +12,7 @@ var facebook = {
   },
 
   appConfig: {
-    appId: '199122750434087',
+    appId: $('meta[name="facebook_app_id"]').attr('content'),
     version: 'v2.5',
     cookie: true
   },
