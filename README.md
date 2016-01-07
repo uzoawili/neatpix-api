@@ -1,4 +1,4 @@
-# neatpix &nbsp;&nbsp;[![Build Status](https://travis-ci.org/andela-uawili/photo-editing-application.svg?branch=develop)](https://travis-ci.org/andela-uawili/photo-editing-application) [![Coverage Status](https://coveralls.io/repos/andela-uawili/photo-editing-application/badge.svg?branch=develop&service=github)](https://coveralls.io/github/andela-uawili/photo-editing-application?branch=develop)
+# neatpix &nbsp;&nbsp;[![Circle CI](https://circleci.com/gh/andela-uawili/photo-editing-application/tree/develop.svg?style=svg)](https://circleci.com/gh/andela-uawili/photo-editing-application/tree/develop) [![Coverage Status](https://coveralls.io/repos/andela-uawili/photo-editing-application/badge.svg?branch=develop&service=github)](https://coveralls.io/github/andela-uawili/photo-editing-application?branch=develop)
 Upload. Prettify. Share.
 
 
