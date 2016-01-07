@@ -1,7 +1,4 @@
-from django.http.request import QueryDict
-from PIL import ImageFilter
-from PIL import ImageEnhance
-from PIL import ImageOps
+from PIL import ImageFilter, ImageEnhance, ImageOps
 
 
 def thumbnail(image):
@@ -62,7 +59,6 @@ def charcoal(image):
     image = brighten(image)
     image = detail(image)
     return image
-
 
 
 photo_effects = [
