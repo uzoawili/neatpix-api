@@ -124,7 +124,9 @@ var facebook = {
     }
   },
 
-  onAuthLoginFailed: function() {
+  onAuthLoginFailed: function(response) {
+    console.log(response)
+    console.log(response.responseText)
     facebook.LoginStatusLabel.html('Login Failed!');
   }
 }
