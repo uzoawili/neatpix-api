@@ -4,7 +4,7 @@ Test specific settings.
 import os
 import logging
 
-if os.getenv('TRAVIS') is None:
+if os.getenv('TRAVIS') is None or os.getenv('CIRCLECI') is None:
     from django_envie.workroom import convertfiletovars
     convertfiletovars()
 
