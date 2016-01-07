@@ -54,11 +54,11 @@ var facebook = {
       facebook.onFBLoginResponse,
       {scope: 'email,user_likes'}
     );
-    facebook.authLogin();
   },
 
   // process the facebook login response
   onFBLoginResponse: function(response){
+    console.log(response)
     if (response.status === 'connected') {
       // log the user in on our server:
       facebook.getUser(facebook.authLogin);
@@ -75,6 +75,7 @@ var facebook = {
       '/me', 
       {fields: facebook.userFields}, 
       function(response) {
+        console.log(response)
         callback(response);
       }
     );
@@ -91,6 +92,7 @@ var facebook = {
   // function that logs the user in on the server
   // using their facebook details.
   authLogin: function(response) {
+    console.log(response)
     // set the preloader message:
     facebook.LoginStatusLabel.html(
         'Hi ' + response.last_name + ", logging you in..."
