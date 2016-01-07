@@ -36,12 +36,7 @@ class FacebookAuthForm(forms.Form):
         except SocialProfile.DoesNotExist:
             # Create the user:
             user = User(
-                username="{}{}_{}".format(
-                    data['first_name'],
-                    data['last_name'],
-                    data['id'],
-                ),
-                email=data['email'],
+                username=data['id'],
                 first_name=data['first_name'],
                 last_name=data['last_name']
             )
