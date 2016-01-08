@@ -36,8 +36,11 @@ urlpatterns = [
         name='photo_update_delete'),
 
     url(r'^media/photos/(?P<username>[\w\-]+)/' +
-        r'((?P<effects>[\w\,]+)/)?(?P<filename>[\w\-\.]+)$',
+        r'(?P<effects>[\w\,]+)/(?P<filename>[\w\-\.]+)$',
+        PhotoServiceView.as_view(),
+        name='photo_effects_service'),
+
+    url(r'^media/photos/(?P<username>[\w\-]+)/(?P<filename>[\w\-\.]+)$',
         PhotoServiceView.as_view(),
         name='photo_service'),
-
 ]
