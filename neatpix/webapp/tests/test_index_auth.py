@@ -14,6 +14,19 @@ class IndexTestCase(TestCase):
         """
         # create a test client:
         self.client = Client()
+        self.user_credentials = {
+            'id': '10207225470607962',
+            'first_name': 'Awili',
+            'last_name': 'Uzo',
+            'email': 'awilo@ymail.com',
+            'photo': 'http://graph.facebook.com/sample_image',
+            'picture': {
+                'data': {
+                    'url': 'http://graph.facebook.com/sample_image',
+                    'is_silouhette': True,
+                }
+            }
+        }
 
     def test_user_can_access_the_index_view(self):
         """
@@ -25,6 +38,21 @@ class IndexTestCase(TestCase):
         )
         self.assertEquals(response.status_code, 200)
         self.assertIn('Log in with Facebook', response.content)
+
+    def test_index_view_redirects_to_dashboard_for_authenticated_user(self):
+        """
+        Tests that a get request to the index redirects to
+        dashboard for an already authenticated user.
+        """
+        # log a user in:
+        self.client.post(
+            reverse('webapp:facebook_auth'),
+            self.user_credentials
+        )
+        response = self.client.get(
+            reverse('webapp:index')
+        )
+        self.assertEquals(response.status_code, 302)
 
     def test_new_user_can_authenticate_with_facebook(self):
         """
@@ -95,6 +123,12 @@ class IndexTestCase(TestCase):
         Tests that a user can logout of the session
         and is then redirected to the home.
         """
+        # log a user in:
+        self.client.post(
+            reverse('webapp:facebook_auth'),
+            self.user_credentials
+        )
+        # log user out and check response:
         response = self.client.get(
             reverse('webapp:logout')
         )

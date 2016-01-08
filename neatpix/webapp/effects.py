@@ -71,6 +71,7 @@ photo_effects = [
     ('smooth', smooth),
     ('contrast', contrast),
     ('charcoal', charcoal),
+    ('invert', invert),
     ('flip', flip),
     ('mirror', mirror),
 ]

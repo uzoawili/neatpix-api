@@ -139,7 +139,6 @@ class PhotoUploadView(JsonResponseMixin, LoginRequiredMixin, View):
         Handles the upload of photos and returns
         a JSON serialization of the uploaded photo.
         """
-
         photoForm = PhotoForm(request.POST, request.FILES)
 
         if photoForm.is_valid():
@@ -160,6 +159,46 @@ class PhotoUploadView(JsonResponseMixin, LoginRequiredMixin, View):
 
         # return error response
         return {'status': 'invalid', }
+
+
+class PhotoUpdateDeleteView(JsonResponseMixin, LoginRequiredMixin, View):
+    """
+    View to handle changes to photos such as updating the
+    applied effects, the caption or deleting it altogethter.
+    """
+    def post(self, request, *args, **kwargs):
+        """
+        Handles the updating of photos and returns
+        a JSON serialization of the updated photo.
+        Note, this view cannot update the associated
+        image file.
+        """
+        public_id = kwargs.get('public_id')
+        photo = get_object_or_404(Photo, public_id=public_id)
+        photoForm = PhotoForm(request.POST, instance=photo)
+        if photoForm.is_valid():
+            # save the photo:
+            photo = photoForm.save()
+            # return the serialized photo:
+            return {
+                'status': 'success',
+                'photoData': photo.serialize(),
+            }
+        # return error response
+        return {'status': 'invalid', }
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Handles the deleting of photos.
+        Note, the actual deletion of the associated
+        image file is handled in the post_delete
+        function defined in the models module.
+        """
+        public_id = kwargs.get('public_id')
+        photo = get_object_or_404(Photo, public_id=public_id)
+        photo.delete()
+        # return error response
+        return {'status': 'success', }
 
 
 class PhotoServiceView(View):
@@ -208,45 +247,5 @@ class PhotoServiceView(View):
         # trigger download if specified:
         if request.GET.get('download') == 'true':
             response['Content-Disposition'] = 'attachment; filename="{}.jpg"'\
-                                              .format(photo.caption)
+                                              .format(photo.public_id)
         return response
-
-
-class PhotoUpdateDeleteView(JsonResponseMixin, LoginRequiredMixin, View):
-    """
-    View to handle changes to photos such as updating the
-    applied effects, the caption or deleting it altogethter.
-    """
-    def post(self, request, *args, **kwargs):
-        """
-        Handles the updating of photos and returns
-        a JSON serialization of the updated photo.
-        Note, this view cannot update the associated
-        image file.
-        """
-        public_id = kwargs.get('public_id')
-        photo = get_object_or_404(Photo, public_id=public_id)
-        photoForm = PhotoForm(request.POST, instance=photo)
-        if photoForm.is_valid():
-            # save the photo:
-            photo = photoForm.save()
-            # return the serialized photo:
-            return {
-                'status': 'success',
-                'photoData': photo.serialize(),
-            }
-        # return error response
-        return {'status': 'invalid', }
-
-    def delete(self, request, *args, **kwargs):
-        """
-        Handles the deleting of photos.
-        Note, the actual deletion of the associated
-        image file is handled in the post_delete
-        function defined in the models module.
-        """
-        public_id = kwargs.get('public_id')
-        photo = get_object_or_404(Photo, public_id=public_id)
-        photo.delete()
-        # return error response
-        return {'status': 'success', }
