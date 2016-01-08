@@ -429,8 +429,10 @@ var PhotoCard = function(config){
 
     onUploadFail: function(e, data){
       // Something has gone wrong!
-      photoCard.statusMsg = 'Upload failed!'
-      photoCard.statusMsg.addClass('error');
+      photoCard.statusMsg.text('Upload failed!');
+      photoCard.statusValue.text('');
+      photoCard.uploadingDiv.addClass('error');
+      photoCard.progressBarProgress.css('width', '0');
     },
 
     formatFileSize: function(bytes) {
@@ -452,6 +454,8 @@ var PhotoCard = function(config){
         dataType: 'json',
         dropZone: settings.uploadDiv,
         acceptFileTypes: /(\.|\/)(gif|bmp|jpe?g|png)$/i,
+        maxNumberOfFiles: 1,
+        maxFileSize: 10000000,
         add: this.onUploadAdd,
         progress: this.onUploadProgress,
         done: this.onUploadSuccess,
@@ -565,7 +569,6 @@ var PhotoCard = function(config){
     },
 
     onCancel: function() {
-      console.log(photoCard.currentState);
       if (photoCard.currentState == photoCard.states.UPLOADED){
         photoCard.closeOverlay();
       } else {
