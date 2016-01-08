@@ -143,3 +143,7 @@ PAGE_ORPHANS = 2
 UID_ALPHABET = 'abcdefghijklmnopqrstuvwxyz0123456789'
 
 UID_LENGTH = 12
+
+# Max image file size 10MB
+
+MAX_UPLOAD_SIZE = 10485760

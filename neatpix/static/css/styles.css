@@ -42,14 +42,11 @@ p {
 }
 
 .divider-v {
-  width: 100%;
-  height: 1px;
+  width: 1px;
+  height: 100%;
   margin: 0;
   overflow: hidden;
   background-color: rgba(238, 238, 238, 0.5);
-  width: 1px;
-  margin: 0;
-  vertical-align: middle;
 }
 
 .divider-shaded {
@@ -406,7 +403,7 @@ html, body, .viewport-container {
 
 body {
   position: relative;
-  background-color: #646472;
+  background-color: #cccccc;
 }
 
 .modals-wrapper {
@@ -782,6 +779,19 @@ body {
   width: 0%;
 }
 
+.photo-card .uploading.error {
+  width: 100%;
+  padding: 10px;
+}
+
+.photo-card .uploading.error .status .message, .photo-card .uploading.error .status .value {
+  color: #B40101;
+}
+
+.photo-card .uploading.error .progress-bar .progress {
+  width: 0%;
+}
+
 .photo-card .uploaded {
   width: 100%;
   padding: 1px;
@@ -904,8 +914,8 @@ body {
 .editor > .effects-section .list {
   list-style: none outside none;
   padding: 0;
+  height: 190px;
   width: 100%;
-  height: 100%;
 }
 
 .editor > .effects-section .list li {

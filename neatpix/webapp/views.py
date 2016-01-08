@@ -16,6 +16,8 @@ from forms import FacebookAuthForm, PhotoForm
 from decorators import json_response
 from effects import photo_effects, thumbnail
 
+from neatpix.settings.base import MAX_UPLOAD_SIZE
+
 
 class LoginRequiredMixin(object):
     """
@@ -137,19 +139,25 @@ class PhotoUploadView(JsonResponseMixin, LoginRequiredMixin, View):
         Handles the upload of photos and returns
         a JSON serialization of the uploaded photo.
         """
+
         photoForm = PhotoForm(request.POST, request.FILES)
+
         if photoForm.is_valid():
-            # save the photo and image file:
-            photo = photoForm.save(commit=False)
-            # set the default caption and user:
-            photo.caption = photo.image.name
-            photo.user = request.user
-            photo.save()
-            # return the serialized photo:
-            return {
-                'status': 'success',
-                'photoData': photo.serialize(),
-            }
+            # check that the file size is valid:
+            image_file_size = photoForm.files['image'].size
+            if image_file_size <= MAX_UPLOAD_SIZE:
+                # save the photo and image file:
+                photo = photoForm.save(commit=False)
+                # set the default caption and user:
+                photo.caption = photo.image.name
+                photo.user = request.user
+                photo.save()
+                # return the serialized photo:
+                return {
+                    'status': 'success',
+                    'photoData': photo.serialize(),
+                }
+
         # return error response
         return {'status': 'invalid', }
 
