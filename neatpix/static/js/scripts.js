@@ -58,7 +58,6 @@ var facebook = {
 
   // process the facebook login response
   onFBLoginResponse: function(response){
-    console.log(response)
     if (response.status === 'connected') {
       // log the user in on our server:
       facebook.getUser(facebook.authLogin);
@@ -74,15 +73,13 @@ var facebook = {
     FB.api(
       '/me', 
       {fields: facebook.userFields}, 
-      function(response) {
-        console.log(response)
+      function(response) {    
         callback(response);
       }
     );
   },
 
   share: function(url, callback) {
-    console.log(url);
     FB.ui({
       method: 'share',
       href: url,
@@ -92,7 +89,6 @@ var facebook = {
   // function that logs the user in on the server
   // using their facebook details.
   authLogin: function(response) {
-    console.log(response)
     // set the preloader message:
     facebook.LoginStatusLabel.html(
         'Hi ' + response.last_name + ", logging you in..."
@@ -125,8 +121,6 @@ var facebook = {
   },
 
   onAuthLoginFailed: function(response) {
-    console.log(response)
-    console.log(response.responseText)
     facebook.LoginStatusLabel.html('Login Failed!');
   }
 }
@@ -584,7 +578,6 @@ var PhotoCard = function(config){
           photoList.currentUploadCard = null;
         photoList.showList();
       }
-      
     },
 
     shareOnFacebook: function() {
@@ -595,7 +588,7 @@ var PhotoCard = function(config){
     },
 
     onFBShareResponse: function(response){
-      console.log(response);
+      // toast to successful share!
     },
 
     downloadPhoto: function(){

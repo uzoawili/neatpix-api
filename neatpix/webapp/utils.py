@@ -21,7 +21,7 @@ def get_photo_upload_path(instance, filename):
     the Photo file to be saved to disk.
     """
     name, ext = os.path.splitext(filename)
-    new_filename = "{}.{}".format(instance.public_id, ext)
+    new_filename = "{}{}".format(instance.public_id, ext)
     user_slug = "{}_{}".format(
         instance.user.username,
         instance.user.id
