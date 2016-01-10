@@ -120,7 +120,7 @@ class DashboardTestCase(TestCase):
             reverse('webapp:photo_upload'),
             {'image': ''}
         )
-        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.status_code, 403)
         self.assertIn('invalid', response.content)
 
     @patch.object(Image, "open")
