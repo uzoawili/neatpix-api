@@ -1,3 +1,4 @@
+import os
 from time import time
 from hashids import Hashids
 from django.conf import settings
@@ -19,8 +20,8 @@ def get_photo_upload_path(instance, filename):
     (relative to MEDIA_ROOT) including the filename for
     the Photo file to be saved to disk.
     """
-    file_ext = filename.split('.')[1]
-    new_filename = "{}.{}".format(instance.public_id, file_ext)
+    name, ext = os.path.splitext(filename)
+    new_filename = "{}{}".format(instance.public_id, ext)
     user_slug = "{}_{}".format(
         instance.user.username,
         instance.user.id

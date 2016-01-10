@@ -115,7 +115,7 @@ class IndexTestCase(TestCase):
                 'email': 'awilo@ymail.com',
             }
         )
-        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.status_code, 403)
         self.assertIn('error', response.content)
 
     def test_auth_logout(self):

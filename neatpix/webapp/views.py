@@ -77,10 +77,11 @@ class FacebookAuthView(JsonResponseMixin, View):
                 # return success response:
                 return {
                     'status': 'success',
+                    'status_code': 200,
                     'loginRedirectURL': reverse('webapp:dashboard'),
                 }
         # return error response
-        return {'status': 'error', }
+        return {'status': 'error', 'status_code': 403, }
 
 
 class LogoutView(LoginRequiredMixin, View):
@@ -126,6 +127,7 @@ class PhotosListView(JsonResponseMixin, LoginRequiredMixin, View):
         photos = [photo.serialize() for photo in photos]
         return {
             'status': 'success',
+            'status_code': 200,
             'data': photos,
         }
 
@@ -154,11 +156,12 @@ class PhotoUploadView(JsonResponseMixin, LoginRequiredMixin, View):
                 # return the serialized photo:
                 return {
                     'status': 'success',
+                    'status_code': 200,
                     'photoData': photo.serialize(),
                 }
 
         # return error response
-        return {'status': 'invalid', }
+        return {'status': 'invalid', 'status_code': 403, }
 
 
 class PhotoUpdateDeleteView(JsonResponseMixin, LoginRequiredMixin, View):
@@ -182,10 +185,11 @@ class PhotoUpdateDeleteView(JsonResponseMixin, LoginRequiredMixin, View):
             # return the serialized photo:
             return {
                 'status': 'success',
+                'status_code': 200,
                 'photoData': photo.serialize(),
             }
         # return error response
-        return {'status': 'invalid', }
+        return {'status': 'invalid', 'status_code': 403, }
 
     def delete(self, request, *args, **kwargs):
         """
@@ -198,7 +202,7 @@ class PhotoUpdateDeleteView(JsonResponseMixin, LoginRequiredMixin, View):
         photo = get_object_or_404(Photo, public_id=public_id)
         photo.delete()
         # return error response
-        return {'status': 'success', }
+        return {'status': 'success', 'status_code': 200, }
 
 
 class PhotoServiceView(View):
@@ -232,13 +236,12 @@ class PhotoServiceView(View):
         # apply any specified effects:
         if effects:
             effects = effects.split(',')
-            for effect_name in effects:
-                # get the matching effects:
-                # import pdb; pdb.set_trace()
-                matching_effects = [effect[1] for effect in photo_effects if effect[0] == effect_name]
-                # apply the effect to the image:
-                if len(matching_effects):
-                    image = matching_effects[0](image)
+            # get the matching effects:
+            is_matching_effect = lambda effect: effect[0] in effects
+            matching_effects = filter(is_matching_effect, photo_effects)
+             # apply each matching effect to the image:
+            for effect in matching_effects:
+                image = effect[1](image)
 
         # save the image to a FileResponse instance:
         response = HttpResponse(content_type=self.content_type)

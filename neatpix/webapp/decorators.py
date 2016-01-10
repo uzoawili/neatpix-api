@@ -9,6 +9,8 @@ def json_response(func):
     """
     @wraps(func)
     def func_wrapper(request, *args, **kwargs):
-        return JsonResponse(func(request, *args, **kwargs))
+        func_response = func(request, *args, **kwargs)
+        status_code = func_response.get('status_code', 200)
+        return JsonResponse(func_response, status=status_code)
 
     return func_wrapper
